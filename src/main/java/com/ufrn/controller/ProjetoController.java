@@ -1,0 +1,14 @@
+package com.ufrn.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/")
+public class ProjetoController {
+    
+    @RequestMapping
+    public String startAplicattion(){
+        return "main";
+    }
+}

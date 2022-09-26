@@ -24,6 +24,8 @@ public class Usuario {
 	
 	@Column(length = 50, nullable = false)
 	private String senha;
+
+	private String email;
 	
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
 	private Set<Reserva> reservas;
@@ -65,8 +67,14 @@ public class Usuario {
 	public void setReservas(Set<Reserva> reservas) {
 		this.reservas = reservas;
 	}
-	
-	
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	
 	
 }

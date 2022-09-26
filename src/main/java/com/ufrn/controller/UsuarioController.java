@@ -13,4 +13,9 @@ public class UsuarioController {
     @Autowired
     UsuarioService usuarioService;
     
+
+    @RequestMapping("/formUsuario")
+    public String formUsuario(){
+        return "cadastroUsuario";
+    }
 }
