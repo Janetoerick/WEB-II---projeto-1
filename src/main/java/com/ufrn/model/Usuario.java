@@ -35,6 +35,12 @@ public class Usuario {
 	public Usuario () { 
 		
 	}
+
+	public Usuario (String login, String email, String senha) { 
+		this.login = login;
+		this.email = email;
+		this.senha = senha;
+	}
 	
 	public Integer getId() {
 		return id;
