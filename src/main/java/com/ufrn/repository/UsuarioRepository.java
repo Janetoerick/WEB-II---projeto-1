@@ -6,4 +6,5 @@ import com.ufrn.model.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
     
+    public Usuario findByLogin(String login);
 }

@@ -18,4 +18,8 @@ public class UsuarioService {
         };
         return false;
     } 
+
+    public Usuario verifyUser(Usuario usuario){
+        return usuarioRepository.findByLogin(usuario.getLogin());
+    }
 }

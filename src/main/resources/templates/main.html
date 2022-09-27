@@ -24,28 +24,37 @@
     <div class="container">
         <div class="row justify-content-center align-items-center vh-100">
             <div class="col-auto">
-                <form class="p-4 p-md-5 border rounded-3 bg-light">
+                <form class="p-4 p-md-5 border rounded-3 bg-light" action="#" th:action="@{/usuario/loginUsuario}" method="post">
                     <div class="row justify-content-center align-items-center mb-3">
                         <div class="col-auto">
                             <h3>Login</h3>
                         </div>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" placeholder="Login">
+                        <input type="text" class="form-control" placeholder="Login" name="login">
                         <label for="inputLogin">Login</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="password" class="form-control" placeholder="Senha">
+                        <input type="password" class="form-control" placeholder="Senha" name="senha">
                         <label for="inputPassword">Senha</label>
                     </div>
                     <div class="form-floating mb-3">
                         <p id="erro"></p>
                     </div>
-                    <button class="w-100 btn btn-lg btn-success mb-3" type="submit">Entrar</button>
+                    <input class="w-100 btn btn-lg btn-success mb-3" type="submit" value="Entrar">
                     <a href="http://localhost:8080/usuario/formUsuario" class="w-100 btn btn-lg btn-primary">Cadastrar</a>
                 </form>
             </div>
         </div>
     </div>
+
+    <script th:inline="javascript">
+        window.onload = function verificacao(){
+            var erro = /*[[${erro}]]*/ "erro";
+            if(erro == "erro login"){
+                document.getElementById("erro").innerHTML = "Login ou senha incorreto!";
+            }
+        }
+    </script>
 </body>
 </html>

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ufrn.model.Usuario;
+import com.ufrn.service.SalaService;
 import com.ufrn.service.UsuarioService;
 
 @Controller
@@ -22,6 +23,9 @@ public class UsuarioController {
 
     @Autowired
     UsuarioService usuarioService;
+
+    @Autowired
+    SalaService salaService;
     
     @RequestMapping("/formUsuario")
     public String formUsuario(){
@@ -54,4 +58,23 @@ public class UsuarioController {
         }
     }
 
+
+    @RequestMapping(value = "loginUsuario", method = RequestMethod.POST)
+    public String loginUsuario(@RequestParam String login, @RequestParam String senha, Model model){
+        Usuario usuario = new Usuario();
+        usuario.setLogin(login);
+        usuario.setSenha(senha);
+
+        Usuario temp = usuarioService.verifyUser(usuario);
+        if(temp != null){
+            System.out.println("entrou no primeiro!!");
+            model.addAttribute("id", temp.getId());
+            model.addAttribute("salas", salaService.getAllSalas());
+            return "login/salas";
+        } else {
+            System.out.println("entrou no segundo!!");
+            model.addAttribute("erro", "erro login");
+            return "main";
+        }
+    }
 }
