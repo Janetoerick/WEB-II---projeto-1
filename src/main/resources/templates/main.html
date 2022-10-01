@@ -24,22 +24,23 @@
     <div class="container">
         <div class="row justify-content-center align-items-center vh-100">
             <div class="col-auto">
-                <form class="p-4 p-md-5 border rounded-3 bg-light" action="#" th:action="@{/usuario/loginUsuario}" method="post">
+                <form class="p-4 p-md-5 border rounded-3 bg-light" th:action="@{/usuario/loginUsuario}" method="post">
                     <div class="row justify-content-center align-items-center mb-3">
                         <div class="col-auto">
                             <h3>Login</h3>
                         </div>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" placeholder="Login" name="login">
+                        <input type="text" class="form-control" placeholder="Login" name="login" th:path="login">
                         <label for="inputLogin">Login</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="password" class="form-control" placeholder="Senha" name="senha">
+                        <input type="password" class="form-control" placeholder="Senha" name="senha" th:path="senha">
                         <label for="inputPassword">Senha</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <p id="erro"></p>
+                        <p id="erro" th:if="${param.error}">Login ou senha incorreto!</p>
+                        <!-- <p id="erro" th:if="${param.logout}">You have been logged out.</p> -->
                     </div>
                     <input class="w-100 btn btn-lg btn-success mb-3" type="submit" value="Entrar">
                     <a href="http://localhost:8080/usuario/formUsuario" class="w-100 btn btn-lg btn-primary">Cadastrar</a>

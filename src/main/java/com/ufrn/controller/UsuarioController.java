@@ -41,7 +41,6 @@ public class UsuarioController {
             model.addAttribute("erro", "campo erro");
             return "cadastroUsuario";
         } else if(!senha.equals(confsenha)){
-            System.out.println(senha + " | " + confsenha);
             model.addAttribute("login", login);
             model.addAttribute("email", email);
             model.addAttribute("erro", "senha erro");
@@ -59,20 +58,44 @@ public class UsuarioController {
     }
 
 
-    @RequestMapping(value = "loginUsuario", method = RequestMethod.POST)
-    public String loginUsuario(@RequestParam String login, @RequestParam String senha, Model model){
-        Usuario usuario = new Usuario();
-        usuario.setLogin(login);
-        usuario.setSenha(senha);
+//    @RequestMapping(value = "loginUsuario", method = RequestMethod.POST)
+//    public String loginUsuario(@RequestParam String login, @RequestParam String senha, Model model){
+//        Usuario usuario = new Usuario();
+//        usuario.setLogin(login);
+//        usuario.setSenha(senha);
+//
+//        Usuario temp = usuarioService.verifyUser(usuario);
+//        if(temp != null){
+//            if(temp.getPrioridade() == 0){
+//                model.addAttribute("id", temp.getId());
+//                model.addAttribute("salas", salaService.getAllSalas());
+//                return "user/salas";
+//            } else {
+//                model.addAttribute("id", temp.getId());
+//                model.addAttribute("salas", salaService.getAllSalas());
+//                return "admin/salas";
+//            }
+//        } else {
+//            model.addAttribute("erro", "erro login");
+//            return "main";
+//        }
+//    }
+//    
+    @RequestMapping(value = "loginUsuario")
+    public String loginUsuario(@ModelAttribute("usuario") Usuario usuario, Model model){
 
         Usuario temp = usuarioService.verifyUser(usuario);
         if(temp != null){
-            System.out.println("entrou no primeiro!!");
-            model.addAttribute("id", temp.getId());
-            model.addAttribute("salas", salaService.getAllSalas());
-            return "login/salas";
+            if(temp.getPrioridade() == 0){
+                model.addAttribute("id", temp.getId());
+                model.addAttribute("salas", salaService.getAllSalas());
+                return "user/salas";
+            } else {
+                model.addAttribute("id", temp.getId());
+                model.addAttribute("salas", salaService.getAllSalas());
+                return "admin/salas";
+            }
         } else {
-            System.out.println("entrou no segundo!!");
             model.addAttribute("erro", "erro login");
             return "main";
         }

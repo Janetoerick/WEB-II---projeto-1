@@ -30,6 +30,7 @@ public class Usuario {
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
 	private Set<Reserva> reservas;
 	
+	private int prioridade;
 	
 
 	public Usuario () { 
@@ -80,6 +81,14 @@ public class Usuario {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public int getPrioridade() {
+		return prioridade;
+	}
+
+	public void setPrioridade(int prioridade) {
+		this.prioridade = prioridade;
 	}
 	
 	
