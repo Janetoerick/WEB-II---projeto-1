@@ -12,7 +12,7 @@
 
     <script th:inline="javascript">
         window.onload = function verificacao() {
-            
+
         }
     </script>
 
@@ -24,13 +24,17 @@
         .b {
             background-color: green;
         }
-        .init{
+
+        .init {
             padding-top: 20px;
         }
+
         .nav-button:hover {
             background-color: rgb(25, 41, 212);
         }
-        td, th{
+
+        td,
+        th {
             text-align: center;
         }
     </style>
@@ -45,12 +49,12 @@
             <div class="justify-content-end col-3">
                 <ul class="navbar-nav row">
                     <li class="nav-item col-auto align-items-center nav-button">
-                        <a class="nav-link active" aria-current="page" 
-                        href="http://localhost:8080/sala/pageSalasAdmin">Salas</a>
+                        <a class="nav-link active" aria-current="page"
+                            href="http://localhost:8080/sala/pageSalasAdmin">Salas</a>
                     </li>
                     <li class="nav-item col-auto nav-button">
-                        <a class="nav-link active" aria-current="page" 
-                        href="http://localhost:8080/reserva/pageReservasAdmin">Reservas</a>
+                        <a class="nav-link active" aria-current="page"
+                            href="http://localhost:8080/reserva/pageReservasAdmin">Reservas</a>
                     </li>
                 </ul>
             </div>
@@ -72,7 +76,6 @@
                                 <th scope="col">Data</th>
                                 <th scope="col">Horário inicial</th>
                                 <th scope="col">Horário final</th>
-                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -81,8 +84,6 @@
                                 <td th:text="${r.data}"></td>
                                 <td th:text="${r.horarioInicial}"></td>
                                 <td th:text="${r.horarioFinal}"></td>
-                                <td><button class="btn btn-danger"
-                                        th:onclick="">Apagar</button></td>
                             </tr>
                         </tbody>
                     </table>

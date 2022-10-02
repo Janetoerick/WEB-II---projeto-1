@@ -81,8 +81,8 @@ public class SalaController {
         
     }
     
-    @RequestMapping("/infoSala/{id}")
-    public String infoSala(@PathVariable("id") String id, Model model){
+    @RequestMapping("/infoSalaAdmin/{id}")
+    public String infoSalaAdmin(@PathVariable("id") String id, Model model){
         if(id.chars().allMatch( Character::isDigit )) {
             Sala temp = salaService.getById(Integer.parseInt(id));
             if(temp != null) {
@@ -92,6 +92,22 @@ public class SalaController {
             }
         }
         return "admin/salasAdmin";
+        
+    }
+    
+    @RequestMapping("/infoSala")
+    public String infoSala(@RequestParam String id_sala, @RequestParam String id, Model model){
+        System.out.println(id + "------------>");
+        if(id_sala.chars().allMatch( Character::isDigit ) && id_sala != null && id_sala != "") {
+            Sala temp = salaService.getById(Integer.parseInt(id_sala));
+            if(temp != null) {
+                model.addAttribute("id", id);
+                model.addAttribute("sala", temp);  
+                model.addAttribute("equipamentos", equipamentoService.getBySala(temp));
+                return "user/infoSala";
+            }
+        }
+        return "main";
         
     }
     

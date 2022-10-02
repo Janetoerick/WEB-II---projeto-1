@@ -135,11 +135,14 @@
                 <ul class="navbar-nav row">
                     <li class="nav-item col-auto align-items-center nav-button">
                         <a class="nav-link active" aria-current="page"
-                            href="http://localhost:8080/sala/pageSalasAdmin">Salas</a>
+                            href="http://localhost:8080/sala/pageSalas">Salas</a>
                     </li>
                     <li class="nav-item col-auto nav-button">
                         <a class="nav-link active" aria-current="page"
-                            href="http://localhost:8080/reserva/pageReservasAdmin">Reservas</a>
+                            href="http://localhost:8080/reserva/pageReservas">Reservas</a>
+                    </li>
+                    <li class="nav-item col-auto nav-button">
+                        <a class="nav-link active" aria-current="page" href="#">Perfil</a>
                     </li>
                 </ul>
             </div>
@@ -147,7 +150,7 @@
     </div>
 
     <div class="container">
-        <div class="row justify-content-end">
+        <div class="row justify-content-center">
             <div class="col-4 init">
                 <div style="text-align: center;">
                     <h2 th:text="${sala.nome}"></h2>
@@ -188,140 +191,34 @@
                     </table>
                 </div>
             </div>
-            <div class="col-4" style="padding-top: 20px;">
+            <div class="col-4 init">
                 <div class="col-12">
-                    <button class="btn btn-success btn_option" onclick="addEq()">Adicionar Equipamento</button>
-                </div>
-                <div class="col-12" style="padding-top: 10px;">
-                    <button class="btn btn-primary btn_option" onclick="editarSala()">Editar Sala</button>
-                </div>
-                <div class="col-12" style="padding-top: 10px;">
-                    <button class="btn btn-danger btn_option" onclick="apagarSala()">Apagar Sala</button>
+                    <form>
+                        <div class="form-floating mb-3">
+                            <input id="dataReserva" type="date" class="form-control" placeholder="Data" name="data">
+                            <label for="dataReserva">Data</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input id="TimeInicial" type="time" class="form-control" placeholder="Hora de início" name="horaInicio">
+                            <label for="inicioReserva">Hora de início</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input id="TimeFinal" type="time" class="form-control" placeholder="Hora de fim" name="horaFinal">
+                            <label for="finalReserva">Hora de fim</label>
+                        </div>
+                        <hr>
+                        <div id="equipamentosReserva" style="height: 200px;">
+
+                        </div>
+                        <hr>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="disable_tela" style="display: none;" onclick="disableAll()">
-        <div id="addEquipamento" style="display: none;">
-            <div class="col-12 row justify-content-center align-items-center vh-100">
-                <div class="col-auto">
-                    <form class="p-4 p-md-5 border rounded-3 bg-light" action="#"
-                        th:action="@{/equipamento/addEquipamento}" method="post">
-                        <div class="row justify-content-center align-items-center mb-3">
-                            <div class="col-auto">
-                                <h3>Cadastro de Equipamento</h3>
-                            </div>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input id="codigoAddEquipamento" type="text" class="form-control" placeholder="Código"
-                                name="codigo">
-                            <label for="inputCodigo">Código</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input id="descricaoAddEquipamento" type="text" class="form-control" placeholder="Descrição"
-                                name="descricao">
-                            <label for="inputEmail">Descrição</label>
-                        </div>
-                        <div class="form-floating mb-3" style="display: none;">
-                            <input type="text" class="form-control" name="sala" th:value="${sala.id}">
-                        </div>
-                        <div class="form-floating mb-3">
-                            <p id="erroAddEq" class="erro"></p>
-                        </div>
-                        <button class="w-100 btn btn-lg btn-success mb-3" type="submit">Cadastrar</button>
-                        <div class="w-100 btn btn-lg btn-primary" onclick="addEq()">Voltar</div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div id="editarSala" style="display: none;">
-            <div class="col-12 row justify-content-center align-items-center vh-100">
-                <div class="col-6">
-                    <form class="p-4 p-md-5 border rounded-3 bg-light" th:action="@{/sala/attSala}" th:object="${sala}"
-                        method="post">
-                        <div class="row justify-content-center align-items-center mb-3">
-                            <div class="col-auto">
-                                <h3>Editar Sala</h3>
-                            </div>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input id="nomeSala" type="text" class="form-control" placeholder="Nome da Sala" name="nome"
-                                th:value="${sala.nome}">
-                            <label for="inputNome">Nome da Sala</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input id="localSala" type="text" class="form-control" placeholder="Local" name="local"
-                                th:value="${sala.local}">
-                            <label for="inputLocal">Local</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input id="andarSala" type="text" class="form-control" placeholder="Andar" name="andar"
-                                th:value="${sala.andar}">
-                            <label for="inputAndar">Andar</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input id="descricaoSala" type="text" class="form-control" placeholder="Descrição"
-                                name="descricao" th:value="${sala.descricao}">
-                            <label for="inputNome">Descrição</label>
-                        </div>
-                        <div class="form-floating mb-3" style="display: none;">
-                            <input type="text" class="form-control" name="id" value="${sala.id}">
-                        </div>
-                        <div class="form-floating mb-3">
-                            <p id="erroeditSala" class="erro"></p>
-                        </div>
-                        <button class="w-100 btn btn-lg btn-success mb-3" type="submit">Atualizar</button>
-                        <div class="w-100 btn btn-lg btn-primary" onclick="editarSala()">Voltar</div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div id="apagarSala" style="display: none;">
-            <div class="col-12 row justify-content-center align-items-center vh-100">
-                <div class="col-4">
-                    <form class="p-4 p-md-5 border rounded-3 bg-light" th:action="@{/sala/apagarSala}"
-                        modelAttribute="id" method="post">
-                        <div class="row justify-content-center align-items-center mb-3">
-                            <div class="col-auto">
-                                <h5 th:text="'Você tem certeza que deseja apagar a sala ' + ${sala.nome} + '?'"></h5>
-                                <p>Isso causará a exclusão de todos os equipamentos registrados ligados a esta sala.</p>
-                            </div>
-                            <hr>
-                        </div>
-                        <div class="form-floating mb-3" style="display: none;">
-                            <input type="text" class="form-control" name="id" th:value="${sala.id}">
-                        </div>
-                        <button class="w-100 btn btn-lg btn-danger mb-3" type="submit">Apagar!</button>
-                        <div class="w-100 btn btn-lg btn-primary" onclick="apagarSala()">Voltar</div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div id="apagarEquipamento" style="display: none;">
-            <div class="col-12 row justify-content-center align-items-center vh-100">
-                <div class="col-4">
-                    <form class="p-4 p-md-5 border rounded-3 bg-light" th:action="@{/equipamento/apagarEquipamento}"
-                        modelAttribute="id" method="post">
-                        <div class="row justify-content-center align-items-center mb-3">
-                            <div class="col-auto">
-                                <h5 id="infoDeleteEq"
-                                    th:text="'Você tem certeza que deseja apagar a sala ' + ${sala.nome} + '?'"></h5>
-                            </div>
-                            <hr>
-                        </div>
-                        <div class="form-floating mb-3" style="display: none;">
-                            <input id="idDeleteEq" type="text" class="form-control" name="id">
-                        </div>
-                        <button class="w-100 btn btn-lg btn-danger mb-3" type="submit">Apagar!</button>
-                        <div class="w-100 btn btn-lg btn-primary" onclick="displayAll()">Voltar</div>
-                    </form>
-                </div>
-            </div>
-        </div>
+    <div id="disable_tela" style="display: none;">
+        
     </div>
 </body>
 

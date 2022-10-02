@@ -67,7 +67,7 @@ public class UsuarioController {
             if(temp.getPrioridade() == 0){
                 model.addAttribute("id", temp.getId());
                 model.addAttribute("salas", salaService.getAllSalas());
-                return "user/salasUser";
+                return "user/salas";
             } else {
                 model.addAttribute("id", temp.getId());
                 
