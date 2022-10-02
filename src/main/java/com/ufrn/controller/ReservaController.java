@@ -20,7 +20,7 @@ public class ReservaController {
     
     @RequestMapping("/pageReservasAdmin")
     public String pageReservasAdmin(Model model) {
-        model.addAttribute("salas", salaService.getAllSalas());    
+        model.addAttribute("reservas", reservaService.getAllReservas());    
         return "admin/ReservasAdmin";
     }
 }

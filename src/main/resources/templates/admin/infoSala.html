@@ -9,6 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <!-- <link rel="stylesheet" type="text/css" href="../css/adjusts.css"> -->
+    <!-- <script type="text/javascript" src="../js/infoSala.js"></script> -->
 
     <script th:inline="javascript">
         window.onload = function verificacao() {
@@ -26,6 +28,7 @@
                 document.getElementById("editarSala").style.display = "block";
             }
         }
+
 
         function addEq() {
 
@@ -70,11 +73,15 @@
             document.getElementsByClassName("form-control").innerHTML = "";
         }
 
-        function telaDisplay() {
-            if (document.getElementById("disable_tela").style.display == "none") {
-                document.getElementById("disable_tela").style.display = "block";
-            } else {
+        function apagarEq(id) { //apagarEquipamento
+            if (document.getElementById("apagarEquipamento").style.display == "block") {
                 document.getElementById("disable_tela").style.display = "none";
+                document.getElementById("apagarEquipamento").style.display = "none";
+            } else {
+                document.getElementById("infoDeleteEq").innerHTML = "Você tem certeza que deseja apagar o equipamento?";
+                document.getElementById("idDeleteEq").value = id;
+                document.getElementById("disable_tela").style.display = "block";
+                document.getElementById("apagarEquipamento").style.display = "block";
             }
         }
     </script>
@@ -119,6 +126,7 @@
             color: red;
         }
     </style>
+
 </head>
 
 <body>
@@ -129,10 +137,11 @@
                 <ul class="navbar-nav row">
                     <li class="nav-item col-auto align-items-center nav-button">
                         <a class="nav-link active" aria-current="page"
-                        href="http://localhost:8080/sala/pageSalasAdmin">Salas</a>
+                            href="http://localhost:8080/sala/pageSalasAdmin">Salas</a>
                     </li>
                     <li class="nav-item col-auto nav-button">
-                        <a class="nav-link active" aria-current="page" href="#">Reservas</a>
+                        <a class="nav-link active" aria-current="page"
+                            href="http://localhost:8080/reserva/pageReservasAdmin">Reservas</a>
                     </li>
                 </ul>
             </div>
@@ -174,7 +183,8 @@
                             <tr th:each="e : ${equipamentos}">
                                 <td scope="row" th:text="${e.codigo}"></td>
                                 <td th:text="${e.descricao}"></td>
-                                <td><button class="btn btn-danger">Apagar</button></td>
+                                <td><button class="btn btn-danger"
+                                        th:onclick="'apagarEq('+ ${e.id} + ')'">Apagar</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -293,12 +303,26 @@
             </div>
         </div>
 
-        <div id="editarEquipamento">
-
-        </div>
-
-        <div id="apagarEquipamento">
-
+        <div id="apagarEquipamento" style="display: none;">
+            <div class="col-12 row justify-content-center align-items-center vh-100">
+                <div class="col-4">
+                    <form class="p-4 p-md-5 border rounded-3 bg-light" th:action="@{/equipamento/apagarEquipamento}"
+                        modelAttribute="id" method="post">
+                        <div class="row justify-content-center align-items-center mb-3">
+                            <div class="col-auto">
+                                <h5 id="infoDeleteEq"
+                                    th:text="'Você tem certeza que deseja apagar a sala ' + ${sala.nome} + '?'"></h5>
+                            </div>
+                            <hr>
+                        </div>
+                        <div class="form-floating mb-3" style="display: none;">
+                            <input id="idDeleteEq" type="text" class="form-control" name="id">
+                        </div>
+                        <button class="w-100 btn btn-lg btn-danger mb-3" type="submit">Apagar!</button>
+                        <div class="w-100 btn btn-lg btn-primary" onclick="displayAll()">Voltar</div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </body>

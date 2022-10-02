@@ -30,8 +30,6 @@ public class EquipamentoController {
         Sala s = salaService.getById(Integer.parseInt(sala));
         Equipamento temp = new Equipamento(Integer.parseInt(codigo), descricao, s);
         
-//        equipamentoService.add(temp);
-//        return "main";
         if(equipamentoService.add(temp)) {
             model.addAttribute("equipamentos", equipamentoService.getBySala(s));
             model.addAttribute("sala", salaService.getById(Integer.parseInt(sala)));
@@ -42,6 +40,18 @@ public class EquipamentoController {
             model.addAttribute("erro", "Código de equipamento já existente na sala!");
             return "admin/infoSala";
         }
+            
+    }
+    
+    @RequestMapping("/apagarEquipamento")
+    public String apagarEquipamento(@ModelAttribute("id") String id, Model model) {
+        
+        
+        Sala sala = equipamentoService.getById(Integer.parseInt(id)).getSala();
+        equipamentoService.removeById(Integer.parseInt(id));
+        model.addAttribute("equipamentos", equipamentoService.getBySala(sala));
+        model.addAttribute("sala", sala);
+        return "admin/infoSala";
             
     }
 }

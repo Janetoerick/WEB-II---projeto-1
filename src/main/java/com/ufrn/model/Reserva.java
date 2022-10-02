@@ -1,5 +1,7 @@
 package com.ufrn.model;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -25,6 +27,12 @@ public class Reserva {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "usuario_id", referencedColumnName = "id")
 	private Usuario usuario;
+	
+	private LocalDate data;
+	
+	private LocalTime horarioInicial;
+	
+	private LocalTime horarioFinal;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
 	@JoinTable(name = "reserva_equipamento",
@@ -60,6 +68,30 @@ public class Reserva {
 	public void setEquipamentos(Set<Equipamento> equipamentos) {
 		this.equipamentos = equipamentos;
 	}
+
+    public LocalDate getData() {
+        return data;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
+    }
+
+    public LocalTime getHorarioInicial() {
+        return horarioInicial;
+    }
+
+    public void setHorarioInicial(LocalTime horarioInicial) {
+        this.horarioInicial = horarioInicial;
+    }
+
+    public LocalTime getHorarioFinal() {
+        return horarioFinal;
+    }
+
+    public void setHorarioFinal(LocalTime horarioFinal) {
+        this.horarioFinal = horarioFinal;
+    }
 
 	
 	
