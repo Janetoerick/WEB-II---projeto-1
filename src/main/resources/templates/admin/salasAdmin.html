@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salas - ADMIN</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+    <script th:inline="javascript">
+        window.onload = function verificacao() {
+            var erro = /*[[${erro}]]*/ "erro";
+            var id = /*[[${id}]]*/ "id";
+
+            if (erro == "erro info sala add") {
+                document.getElementById("form-sala").style.display = "block";
+                document.getElementById("nomeSala").value = sala.nome;
+                document.getElementById("localSala").value = sala.local;
+                document.getElementById("andarSala").value = sala.andar;
+                document.getElementById("descricaoSala").value = sala.descricao;
+                document.getElementById("erro").innerHTML = "Dados incompletos!";
+            }
+        }
+
+        function activeFormSala() {
+            if (document.getElementById("form-sala").style.display == "block") {
+                document.getElementById("form-sala").style.display = "none";
+                document.getElementById("nomeSala").value = "";
+                document.getElementById("localSala").value = "";
+                document.getElementById("andarSala").value = "";
+                document.getElementById("descricaoSala").value = "";
+                document.getElementById("erro").innerHTML = "";
+            } else {
+                document.getElementById("form-sala").style.display = "block";
+            }
+        }
+
+        function apagarSala(id) {
+            console.log("entrou! " + id);
+            if (document.getElementById("apagarSala").style.display == "block") {
+                document.getElementById("disable_tela").style.display = "none";
+                document.getElementById("apagarSala").style.display = "none";
+            } else {
+                document.getElementById("disable_tela").style.display = "block";
+                document.getElementById("apagarSala").style.display = "block";
+            }
+        }
+    </script>
+    <style>
+        .a {
+            background-color: red;
+        }
+
+        .b {
+            background-color: green;
+        }
+
+        .init {
+            padding-top: 50px;
+        }
+
+        .dropdown-toggle::after {
+            content: none;
+        }
+
+        #navbarDropdown {
+            border-radius: 50px;
+            background-color: rgb(67, 75, 148);
+            border: 1px solid white;
+        }
+
+        .nav-link {
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .nav-button:hover {
+            background-color: rgb(25, 41, 212);
+        }
+
+        .salas {
+            padding-top: 500px;
+        }
+
+        .sala {
+            height: 50px;
+            border-radius: 5px;
+            border: 1px solid gray;
+        }
+
+        .page-form-sala {
+            background-color: rgba(0, 0, 0, 0.48);
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid ">
+            <span class="navbar-brand mb-0 h1">Reserva de Sala</span>
+            <div class="justify-content-end col-3">
+                <ul class="navbar-nav row">
+                    <li class="nav-item col-auto align-items-center nav-button">
+                        <a class="nav-link active" aria-current="page" 
+                        href="http://localhost:8080/sala/pageSalasAdmin">Salas</a>
+                    </li>
+                    <li class="nav-item col-auto nav-button">
+                        <a class="nav-link active" aria-current="page" 
+                        href="http://localhost:8080/reserva/pageReservasAdmin">Reservas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="row justify-content-end init">
+            <div id="adicionarSala" class="col-4">
+                <button class="btn btn-success" onclick="activeFormSala()">Adicionar sala</button>
+            </div>
+        </div><br>
+        <div id="salas" class="row justify-content-center">
+            <div class="col-4">
+                <div class="row justify-content-center">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Local</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="s : ${salas}">
+                                <td scope="row" th:text="${s.nome}"></td>
+                                <td th:text="${s.local}"></td>
+                                <td><a th:href="'http://localhost:8080/sala/infoSala/' + ${s.id}"><button class='btn btn-primary'>
+                                    Visualizar
+                                </button></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="form-sala" class="page-form-sala">
+        <div class="col-12 row justify-content-center align-items-center vh-100">
+            <div class="form-sala col-6">
+                <form class="p-4 p-md-5 border rounded-3 bg-light" action="#" th:action="@{/sala/addSala}"
+                    th:object="${sala}" method="post">
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-12" style="text-align: center;">
+                            <h3>Cadastro de Sala</h3>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input id="nomeSala" type="text" class="form-control" placeholder="Nome da Sala"
+                                name="nome">
+                            <label for="inputNome">Nome da Sala</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input id="localSala" type="text" class="form-control" placeholder="Local" name="local">
+                            <label for="inputLocal">Local</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input id="andarSala" type="text" class="form-control" placeholder="Andar" name="andar">
+                            <label for="inputAndar">Andar</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input id="descricaoSala" type="text" class="form-control" placeholder="Descrição"
+                                name="descricao">
+                            <label for="inputNome">Descrição</label>
+                        </div>
+                        <div class="form-floating mb-3" style="display: none;">
+                            <input type="text" class="form-control" name="id" value="${id}">
+                        </div>
+                        <p id="erro" style="color: red;" class="col-12"></p>
+
+                        <button class="w-100 btn btn-lg btn-success mb-3" type="submit">Cadastrar</button>
+                        <div class="w-100 btn btn-lg btn-primary" onclick="activeFormSala()">Voltar</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

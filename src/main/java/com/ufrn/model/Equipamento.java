@@ -22,6 +22,8 @@ public class Equipamento {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	private int codigo;
+	
 	private String descricao;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
@@ -39,7 +41,16 @@ public class Equipamento {
 		
 	}
 
-	public Integer getId() {
+	public Equipamento(int codigo, String descricao, Sala sala) {
+        super();
+        this.codigo = codigo;
+        this.descricao = descricao;
+        this.sala = sala;
+    }
+
+
+
+    public Integer getId() {
 		return id;
 	}
 
@@ -70,6 +81,14 @@ public class Equipamento {
 	public void setSala(Sala sala) {
 		this.sala = sala;
 	}
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
 	
 	
 	

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -57,30 +58,7 @@ public class UsuarioController {
         }
     }
 
-
-//    @RequestMapping(value = "loginUsuario", method = RequestMethod.POST)
-//    public String loginUsuario(@RequestParam String login, @RequestParam String senha, Model model){
-//        Usuario usuario = new Usuario();
-//        usuario.setLogin(login);
-//        usuario.setSenha(senha);
-//
-//        Usuario temp = usuarioService.verifyUser(usuario);
-//        if(temp != null){
-//            if(temp.getPrioridade() == 0){
-//                model.addAttribute("id", temp.getId());
-//                model.addAttribute("salas", salaService.getAllSalas());
-//                return "user/salas";
-//            } else {
-//                model.addAttribute("id", temp.getId());
-//                model.addAttribute("salas", salaService.getAllSalas());
-//                return "admin/salas";
-//            }
-//        } else {
-//            model.addAttribute("erro", "erro login");
-//            return "main";
-//        }
-//    }
-//    
+ 
     @RequestMapping(value = "loginUsuario")
     public String loginUsuario(@ModelAttribute("usuario") Usuario usuario, Model model){
 
@@ -89,11 +67,12 @@ public class UsuarioController {
             if(temp.getPrioridade() == 0){
                 model.addAttribute("id", temp.getId());
                 model.addAttribute("salas", salaService.getAllSalas());
-                return "user/salas";
+                return "user/salasUser";
             } else {
                 model.addAttribute("id", temp.getId());
+                
                 model.addAttribute("salas", salaService.getAllSalas());
-                return "admin/salas";
+                return "admin/salasAdmin";
             }
         } else {
             model.addAttribute("erro", "erro login");

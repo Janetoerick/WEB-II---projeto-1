@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salas - ADMIN</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+    <script th:inline="javascript">
+        window.onload = function verificacao() {
+            var erro = /*[[${erro}]]*/ "erro";
+            var id = /*[[${id}]]*/ "id";
+        }
+    </script>
+
+    <style>
+        .a {
+            background-color: red;
+        }
+
+        .b {
+            background-color: green;
+        }
+        .nav-button:hover {
+            background-color: rgb(25, 41, 212);
+        }
+    </style>
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid ">
+            <span class="navbar-brand mb-0 h1">Reserva de Sala</span>
+            <div class="justify-content-end col-3">
+                <ul class="navbar-nav row">
+                    <li class="nav-item col-auto align-items-center nav-button">
+                        <a class="nav-link active" aria-current="page" 
+                        href="http://localhost:8080/sala/pageSalasAdmin">Salas</a>
+                    </li>
+                    <li class="nav-item col-auto nav-button">
+                        <a class="nav-link active" aria-current="page" 
+                        href="http://localhost:8080/reserva/pageReservasAdmin">Reservas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-8 justify-content-center">
+                <h2>Começa aqui</h2>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
