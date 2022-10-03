@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'Perfil - ' + ${usuario.login}"></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <script th:inline="javascript">
+        window.onload = () => {
+            var erro = /*[[${erro}]]*/ "erro";
+
+            if(erro == "not"){
+                alert("Senha alterada com sucesso!");
+            }else if(erro != null){
+                document.getElementById("erro").innerHTML = erro;
+                document.getElementById("disable_tela").style.display = "block";
+            }
+        }
+        function mudarSenha(){
+            if (document.getElementById("disable_tela").style.display == "block") {
+                document.getElementById("disable_tela").style.display = "none";
+            } else {
+                document.getElementById("disable_tela").style.display = "block";
+            }
+        }
+    </script>
+    <style>
+        .a {
+            background-color: red;
+        }
+
+        .b {
+            background-color: green;
+        }
+
+        .nav-item:hover {
+            background-color: rgb(25, 41, 212);
+        }
+
+        .init {
+            padding-top: 100px;
+        }
+
+        #disable_tela {
+            background-color: rgba(0, 0, 0, 0.48);
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            display: none;
+        }
+
+        #erro {
+            color: red;
+            size: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid ">
+            <span class="navbar-brand mb-0 h1">Reserva de Equipamento</span>
+            <div class="justify-content-end col-3">
+                <ul class="navbar-nav row">
+                    <li class="nav-item col-auto align-items-center">
+                        <a class="nav-link active" aria-current="page" th:href="'http://localhost:8080/sala/pageSalas/' + ${id}">Salas</a>
+                    </li>
+                    <li class="nav-item col-auto">
+                        <a class="nav-link active" aria-current="page" th:href="'http://localhost:8080/reserva/pageReservasUser/' + ${usuario.id}">Minhas Reservas</a>
+                    </li>
+                    <li class="nav-item col-auto">
+                        <a class="nav-link active" aria-current="page" th:href="'http://localhost:8080/usuario/perfilUsuario/' + ${usuario.id}">Perfil</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-4 init">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                          <td>Login:</td>
+                          <td th:text="${usuario.login}"></td>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td th:text="${usuario.email}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row justify-content-end">
+                    <button class="col-auto btn btn-primary" onclick="mudarSenha()">Trocar senha</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="disable_tela" style="display: none;">
+        <div id="editarSenha">
+            <div class="col-12 row justify-content-center align-items-center vh-100">
+                <div class="col-4">
+                    <form class="p-4 p-md-5 border rounded-3 bg-light" th:action="@{/usuario/trocarSenha}" method="post">
+                        <div class="row justify-content-center align-items-center mb-3">
+                            <div class="col-auto">
+                                <h5>Mudança de senha</h5>
+                            </div>
+                            <hr>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input id="SenhaAtual" type="password" class="form-control" placeholder="Senha atual" name="senhaAtual">
+                            <label for="SenhaAtual">Senha Atual</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input id="novaSenha" type="password" class="form-control" placeholder="Nova senha" name="novaSenha">
+                            <label for="novaSenha">Nova senha</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input id="confSenha" type="password" class="form-control" placeholder="Confirmar senha" name="confSenha">
+                            <label for="confSenha">Confirmar senha</label>
+                        </div>
+                        <div class="form-floating mb-3" style="display: none;">
+                            <input id="idDeleteEq" type="text" class="form-control" name="id" th:value="${usuario.id}">
+                        </div>
+                        <div class="form-floating mb-3" style="text-align: center;">
+                            <p id="erro"></p>
+                        </div>
+                        <button class="w-100 btn btn-lg btn-success mb-3" type="submit">Mudar senha</button>
+                        <div class="w-100 btn btn-lg btn-primary" onclick="mudarSenha()">Voltar</div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

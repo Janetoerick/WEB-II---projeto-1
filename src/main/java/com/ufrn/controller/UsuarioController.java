@@ -79,4 +79,31 @@ public class UsuarioController {
             return "main";
         }
     }
+    
+    @RequestMapping("/perfilUsuario/{id}")
+    public String perfilUsuario(@PathVariable("id") String id, Model model) {
+        Usuario temp = usuarioService.findById(Integer.parseInt(id));
+        if(temp != null) {
+            model.addAttribute("usuario", temp);
+            return "user/perfilUser";
+        }
+        return "main";
+    }
+    
+    @RequestMapping("/trocarSenha")
+    public String trocarSenha(@RequestParam String senhaAtual, @RequestParam String novaSenha,
+            @RequestParam String confSenha, @RequestParam String id, Model model) {
+        Usuario temp = usuarioService.findById(Integer.parseInt(id));
+        model.addAttribute("usuario", temp);
+        if(temp.getSenha().equals(senhaAtual)) {
+            if(novaSenha.equals(confSenha)) {
+                model.addAttribute("erro", "not");
+                return "user/perfilUser";
+            } else
+                model.addAttribute("erro", "Senhas não são iguais!");
+        } else
+            model.addAttribute("erro", "Senha atual incorreta!");
+        
+        return "user/perfilUser";
+    }
 }

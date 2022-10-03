@@ -11,12 +11,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
     <script th:inline="javascript">
-        window.onload = function verificacao() {
-
-        }
 
         function cancelarReserva(id){
-            if (document.getElementById("apagarReserva").style.display == "block" || id < 0) {
+            if (document.getElementById("disable_tela").style.display == "block" || id < 0) {
                 document.getElementById("disable_tela").style.display = "none";
             } else {
                 document.getElementById("idDeleteReserva").value = id;
@@ -38,7 +35,7 @@
             padding-top: 20px;
         }
 
-        .nav-button:hover {
+        .nav-item:hover {
             background-color: rgb(25, 41, 212);
         }
 
@@ -66,7 +63,7 @@
             <div class="justify-content-end col-3">
                 <ul class="navbar-nav row">
                     <li class="nav-item col-auto align-items-center">
-                        <a class="nav-link active" aria-current="page" href="http://localhost:8080/sala/infoSala">Salas</a>
+                        <a class="nav-link active" aria-current="page" th:href="'http://localhost:8080/sala/pageSalas/' + ${id}">Salas</a>
                     </li>
                     <li class="nav-item col-auto">
                         <a class="nav-link active" aria-current="page" th:href="'http://localhost:8080/reserva/pageReservasUser/' + ${id}">Minhas Reservas</a>

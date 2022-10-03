@@ -33,6 +33,15 @@ public class Sala {
 		
 	}
 	
+	public Sala(Integer id,String nome, String local, int andar, String descricao) {
+        super();
+        this.id = id;
+        this.nome = nome;
+        this.local = local;
+        this.andar = andar;
+        this.descricao = descricao;
+    }
+	
 	public Sala(String nome, String local, int andar, String descricao) {
         super();
         this.nome = nome;

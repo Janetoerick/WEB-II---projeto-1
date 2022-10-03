@@ -28,8 +28,8 @@ public class SalaController {
     @Autowired
     EquipamentoService equipamentoService;
     
-    @RequestMapping("/pageSalas")
-    public String pageSalas(@RequestParam("id") String id, Model model) {
+    @RequestMapping("/pageSalas/{id}")
+    public String pageSalas(@PathVariable("id") String id, Model model) {
         model.addAttribute("salas", salaService.getAllSalas());
         model.addAttribute("id", id);    
         if(usuarioService.findById(Integer.parseInt(id)).getPrioridade() == 0) {
@@ -59,7 +59,7 @@ public class SalaController {
         try {
             Sala temp = new Sala();
             if(andar.chars().allMatch( Character::isDigit ) && andar != "") {
-                temp = new Sala(nome,local,Integer.parseInt(andar),descricao);
+                temp = new Sala(nome,local,Integer.parseInt(andar), descricao);
             }else {
                 temp = new Sala(nome,local,descricao);
             }
@@ -116,13 +116,13 @@ public class SalaController {
         try {
             Sala temp = new Sala();
             if(andar.chars().allMatch( Character::isDigit ) && andar != "") {
-                temp = new Sala(nome,local,Integer.parseInt(andar),descricao);
-            }else {
-                temp = new Sala(nome,local,descricao);
+                temp = new Sala(Integer.parseInt(id),nome,local,Integer.parseInt(andar),descricao);
             }
+            
+            Sala s_original = salaService.getById(Integer.parseInt(id));
             if(nome == "" || local == "" || andar == "" || descricao == "" || !andar.chars().allMatch( Character::isDigit )) {
                 model.addAttribute("sala", temp);  
-                model.addAttribute("equipamentos", equipamentoService.getBySala(temp));
+                model.addAttribute("equipamentos", equipamentoService.getBySala(s_original));
                 model.addAttribute("erro", "Dados da sala incompletos!");
             } else {
                 salaService.add(temp);

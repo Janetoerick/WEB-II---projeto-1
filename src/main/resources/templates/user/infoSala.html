@@ -29,7 +29,7 @@
             background-color: green;
         }
 
-        .nav-button:hover {
+        .nav-item:hover {
             background-color: rgb(25, 41, 212);
         }
 
@@ -72,7 +72,7 @@
             <div class="justify-content-end col-3">
                 <ul class="navbar-nav row">
                     <li class="nav-item col-auto align-items-center">
-                        <a class="nav-link active" aria-current="page" href="http://localhost:8080/sala/infoSala">Salas</a>
+                        <a class="nav-link active" aria-current="page" th:href="'http://localhost:8080/sala/pageSalas/' + ${id}">Salas</a>
                     </li>
                     <li class="nav-item col-auto">
                         <a class="nav-link active" aria-current="page" th:href="'http://localhost:8080/reserva/pageReservasUser/' + ${id}">Minhas Reservas</a>
