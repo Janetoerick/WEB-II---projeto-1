@@ -45,7 +45,18 @@ public class Reserva {
 		
 	}
 	
-	public Integer getId() {
+	
+	public Reserva(Usuario usuario, LocalDate data, LocalTime horarioInicial, LocalTime horarioFinal) {
+        super();
+        this.usuario = usuario;
+        this.data = data;
+        this.horarioInicial = horarioInicial;
+        this.horarioFinal = horarioFinal;
+    }
+
+
+
+    public Integer getId() {
 		return id;
 	}
 

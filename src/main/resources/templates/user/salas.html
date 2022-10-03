@@ -48,13 +48,13 @@
             <div class="justify-content-end col-3">
                 <ul class="navbar-nav row">
                     <li class="nav-item col-auto align-items-center">
-                        <a class="nav-link active" aria-current="page" href="#">Salas</a>
+                        <a class="nav-link active" aria-current="page" href="http://localhost:8080/sala/infoSala">Salas</a>
                     </li>
                     <li class="nav-item col-auto">
-                        <a class="nav-link active" aria-current="page" href="#">Minhas Reservas</a>
+                        <a class="nav-link active" aria-current="page" th:href="'http://localhost:8080/reserva/pageReservasUser/' + ${id}">Minhas Reservas</a>
                     </li>
                     <li class="nav-item col-auto">
-                        <a class="nav-link active" aria-current="page" href="#">Perfil</a>
+                        <a class="nav-link active" aria-current="page" th:href="'http://localhost:8080/usuario/perfilUsuario/' + ${id}">Perfil</a>
                     </li>
                 </ul>
             </div>

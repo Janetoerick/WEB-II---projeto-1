@@ -15,71 +15,8 @@
             var id = /*[[${id}]]*/ "id";
             var erro = /*[[${erro}]]*/ "erro";
 
-            if (erro == "Código de equipamento já existente na sala!") {
-
-                document.getElementById("erroAddEq").innerHTML = erro;
-                document.getElementById("disable_tela").style.display = "block";
-                document.getElementById("addEquipamento").style.display = "block";
-            } else if (erro == "Dados da sala incompletos!") {
-                document.getElementById("erroeditSala").innerHTML = erro;
-                document.getElementById("disable_tela").style.display = "block";
-                document.getElementById("editarSala").style.display = "block";
-            }
-        }
-
-
-        function addEq() {
-
-            if (document.getElementById("addEquipamento").style.display == "block") {
-                document.getElementById("disable_tela").style.display = "none";
-                document.getElementById("addEquipamento").style.display = "none";
-                document.getElementById("codigoAddEquipamento").value = "";
-                document.getElementById("descricaoAddEquipamento").value = "";
-            } else {
-                document.getElementById("disable_tela").style.display = "block";
-                document.getElementById("addEquipamento").style.display = "block";
-            }
-        }
-
-        function editarSala() {
-            if (document.getElementById("editarSala").style.display == "block") {
-                document.getElementById("disable_tela").style.display = "none";
-                document.getElementById("editarSala").style.display = "none";
-            } else {
-                document.getElementById("disable_tela").style.display = "block";
-                document.getElementById("editarSala").style.display = "block";
-            }
-        }
-
-        function apagarSala() {
-            if (document.getElementById("apagarSala").style.display == "block") {
-                document.getElementById("disable_tela").style.display = "none";
-                document.getElementById("apagarSala").style.display = "none";
-            } else {
-                document.getElementById("disable_tela").style.display = "block";
-                document.getElementById("apagarSala").style.display = "block";
-            }
-        }
-
-        function displayAll() {
-            document.getElementById("disable_tela").style.display = "none";
-            document.getElementById("addEquipamento").style.display = "none";
-            document.getElementById("editarSala").style.display = "none";
-            document.getElementById("apagarSala").style.display = "none";
-            document.getElementById("editarEquipamento").style.display = "none";
-            document.getElementById("apagarEquipamento").style.display = "none";
-            document.getElementsByClassName("form-control").innerHTML = "";
-        }
-
-        function apagarEq(id) { //apagarEquipamento
-            if (document.getElementById("apagarEquipamento").style.display == "block") {
-                document.getElementById("disable_tela").style.display = "none";
-                document.getElementById("apagarEquipamento").style.display = "none";
-            } else {
-                document.getElementById("infoDeleteEq").innerHTML = "Você tem certeza que deseja apagar o equipamento?";
-                document.getElementById("idDeleteEq").value = id;
-                document.getElementById("disable_tela").style.display = "block";
-                document.getElementById("apagarEquipamento").style.display = "block";
+            if (erro != null) {
+                document.getElementById("erroAdd").innerHTML = erro;
             }
         }
     </script>
@@ -122,6 +59,7 @@
 
         .erro {
             color: red;
+            size: 8px;
         }
     </style>
 
@@ -130,19 +68,17 @@
 <body>
     <div class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid ">
-            <span class="navbar-brand mb-0 h1">Reserva de Sala</span>
+            <span class="navbar-brand mb-0 h1">Reserva de Equipamento</span>
             <div class="justify-content-end col-3">
                 <ul class="navbar-nav row">
-                    <li class="nav-item col-auto align-items-center nav-button">
-                        <a class="nav-link active" aria-current="page"
-                            href="http://localhost:8080/sala/pageSalas">Salas</a>
+                    <li class="nav-item col-auto align-items-center">
+                        <a class="nav-link active" aria-current="page" href="http://localhost:8080/sala/infoSala">Salas</a>
                     </li>
-                    <li class="nav-item col-auto nav-button">
-                        <a class="nav-link active" aria-current="page"
-                            href="http://localhost:8080/reserva/pageReservas">Reservas</a>
+                    <li class="nav-item col-auto">
+                        <a class="nav-link active" aria-current="page" th:href="'http://localhost:8080/reserva/pageReservasUser/' + ${id}">Minhas Reservas</a>
                     </li>
-                    <li class="nav-item col-auto nav-button">
-                        <a class="nav-link active" aria-current="page" href="#">Perfil</a>
+                    <li class="nav-item col-auto">
+                        <a class="nav-link active" aria-current="page" th:href="'http://localhost:8080/usuario/perfilUsuario/' + ${id}">Perfil</a>
                     </li>
                 </ul>
             </div>
@@ -166,37 +102,22 @@
                         <td th:text="${sala.andar}"></td>
                     </tr>
                     <tr>
-                        <td style="width: 100px;"><b>Descrição:</b></td>
+                        <td><b>Descrição:</b></td>
                         <td th:text="${sala.descricao}"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 150px;"><b>Equipamentos:</b></td>
+                        <td th:text="${equipamentos.size}"></td>
                     </tr>
                 </table>
                 <hr>
-                <div class="row justify-content-center">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col" style="width: 300px;">Descricao</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="e : ${equipamentos}">
-                                <td scope="row" th:text="${e.codigo}"></td>
-                                <td th:text="${e.descricao}"></td>
-                                <td><button class="btn btn-danger"
-                                        th:onclick="'apagarEq('+ ${e.id} + ')'">Apagar</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
             </div>
             <div class="col-4 init">
                 <div class="col-12">
-                    <form>
+                    <form th:action="@{/reserva/addReserva}"  method="post">
                         <div class="form-floating mb-3">
-                            <input id="dataReserva" type="date" class="form-control" placeholder="Data" name="data">
-                            <label for="dataReserva">Data</label>
+                            <input id="dataReserva" type="date" class="form-control" placeholder="Data da reserva" name="data">
+                            <label for="dataReserva">Data da reserva</label>
                         </div>
                         <div class="form-floating mb-3">
                             <input id="TimeInicial" type="time" class="form-control" placeholder="Hora de início" name="horaInicio">
@@ -206,11 +127,20 @@
                             <input id="TimeFinal" type="time" class="form-control" placeholder="Hora de fim" name="horaFinal">
                             <label for="finalReserva">Hora de fim</label>
                         </div>
-                        <hr>
-                        <div id="equipamentosReserva" style="height: 200px;">
-
+                        <div class="form-floating mb-3">
+                            <input id="QntEquipamentos" type="number" class="form-control" placeholder="Quantidade de equipamentos (max. 2)" name="qntEquipamentos">
+                            <label for="qntEqReserva">Quantidade de equipamentos (max. 2)</label>
                         </div>
-                        <hr>
+                        <div class="form-floating mb-3" style="display: none;">
+                            <input type="text" class="form-control" name="id_sala" th:value="${sala.id}">
+                        </div>
+                        <div class="form-floating mb-3" style="display: none;">
+                            <input type="text" class="form-control" name="id_usuario" th:value="${id}">
+                        </div>
+                        <div class="form-floating mb-3" style="text-align: center;">
+                            <p id="erroAdd" class="erro"></p>
+                        </div>
+                        <button class="w-100 btn btn-lg btn-success mb-3" type="submit">Registrar reserva</button>
                     </form>
                 </div>
             </div>

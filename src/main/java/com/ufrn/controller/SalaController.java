@@ -97,7 +97,6 @@ public class SalaController {
     
     @RequestMapping("/infoSala")
     public String infoSala(@RequestParam String id_sala, @RequestParam String id, Model model){
-        System.out.println(id + "------------>");
         if(id_sala.chars().allMatch( Character::isDigit ) && id_sala != null && id_sala != "") {
             Sala temp = salaService.getById(Integer.parseInt(id_sala));
             if(temp != null) {

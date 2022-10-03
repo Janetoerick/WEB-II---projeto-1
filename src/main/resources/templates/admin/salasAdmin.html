@@ -39,7 +39,6 @@
         }
 
         function apagarSala(id) {
-            console.log("entrou! " + id);
             if (document.getElementById("apagarSala").style.display == "block") {
                 document.getElementById("disable_tela").style.display = "none";
                 document.getElementById("apagarSala").style.display = "none";
@@ -145,7 +144,7 @@
                             <tr th:each="s : ${salas}">
                                 <td scope="row" th:text="${s.nome}"></td>
                                 <td th:text="${s.local}"></td>
-                                <td><a th:href="'http://localhost:8080/sala/infoSala/' + ${s.id}"><button class='btn btn-primary'>
+                                <td><a th:href="'http://localhost:8080/sala/infoSalaAdmin/' + ${s.id}"><button class='btn btn-primary'>
                                     Visualizar
                                 </button></a></td>
                             </tr>
@@ -175,7 +174,7 @@
                             <label for="inputLocal">Local</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input id="andarSala" type="text" class="form-control" placeholder="Andar" name="andar">
+                            <input id="andarSala" type="number" class="form-control" placeholder="Andar" name="andar">
                             <label for="inputAndar">Andar</label>
                         </div>
                         <div class="form-floating mb-3">
