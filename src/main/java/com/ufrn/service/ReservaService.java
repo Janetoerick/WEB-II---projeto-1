@@ -50,10 +50,6 @@ public class ReservaService {
         for(int i = 0; i < qntEquipamentos; i++)
             e_2.add(e_1.get(i));
         
-        //e_2.addAll(e_1);
-        
-        if(e_2.size() > qntEquipamentos)
-            e_2.remove(0);
         
         if(e_2.isEmpty()) {
            return false;
