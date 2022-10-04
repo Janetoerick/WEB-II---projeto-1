@@ -20,8 +20,13 @@ public class UsuarioService {
         return false;
     } 
 
-    public Usuario verifyUser(Usuario usuario){
-        return usuarioRepository.findByLogin(usuario.getLogin());
+    public Usuario verifyUser(String login, String senha){
+        Usuario temp = usuarioRepository.findByLogin(login);
+        if(temp.getSenha().equals(senha))
+            return temp;
+        
+        temp.setId(-1);
+        return temp;
     }
     
     public Usuario findById(int id) {

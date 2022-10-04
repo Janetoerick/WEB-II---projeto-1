@@ -63,8 +63,10 @@ public class ReservaController {
         
         int qntEq = Integer.parseInt(qntEquipamentos);
         if(qntEq > 0 && qntEq < 3 && reservaService.add(reserva, Integer.parseInt(id_sala),qntEq)) {
-            model.addAttribute("reservas", reservaService.getAllReservas());    
-            return "admin/ReservasAdmin"; // MUDAAAAR
+            model.addAttribute("id", id_usuario);
+            model.addAttribute("reservas", reservaService.getAllReservasByIdUser(Integer.parseInt(id_usuario)));    
+            return "user/reservasUser";
+            //return "main";
         } else {
             Sala s = salaService.getById(Integer.parseInt(id_sala));
             model.addAttribute("id", id_usuario);
@@ -73,7 +75,7 @@ public class ReservaController {
             if(qntEq > 0 && qntEq < 3) {
                 model.addAttribute("erro", "Não existem equipamentos na sala livres no momento solicitado!");
             } else {
-                model.addAttribute("erro", "Quantidade de equipamentos inválido!");
+                model.addAttribute("erro", "Dados Incoerentes!");
             }
             
             return "user/infoSala";
@@ -87,7 +89,7 @@ public class ReservaController {
         
         reservaService.deleteById(Integer.parseInt(id_reserva));
         model.addAttribute("id", id_usuario);
-        model.addAttribute("salas", reservaService.getAllReservas());
+        model.addAttribute("reservas", reservaService.getAllReservas());
         return "user/reservasUser";
     }
     

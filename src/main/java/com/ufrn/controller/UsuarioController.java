@@ -60,10 +60,10 @@ public class UsuarioController {
 
  
     @RequestMapping(value = "loginUsuario")
-    public String loginUsuario(@ModelAttribute("usuario") Usuario usuario, Model model){
+    public String loginUsuario(@RequestParam String login, @RequestParam String senha, Model model){
 
-        Usuario temp = usuarioService.verifyUser(usuario);
-        if(temp != null){
+        Usuario temp = usuarioService.verifyUser(login, senha);
+        if(temp.getId() > -1){
             if(temp.getPrioridade() == 0){
                 model.addAttribute("id", temp.getId());
                 model.addAttribute("salas", salaService.getAllSalas());

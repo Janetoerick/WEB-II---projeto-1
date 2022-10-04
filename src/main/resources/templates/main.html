@@ -31,15 +31,15 @@
                         </div>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" placeholder="Login" name="login" th:path="login">
+                        <input type="text" class="form-control" placeholder="Login" name="login">
                         <label for="inputLogin">Login</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="password" class="form-control" placeholder="Senha" name="senha" th:path="senha">
+                        <input type="password" class="form-control" placeholder="Senha" name="senha">
                         <label for="inputPassword">Senha</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <p id="erro" th:if="${param.error}">Login ou senha incorreto!</p>
+                        <p id="erro"></p>
                         <!-- <p id="erro" th:if="${param.logout}">You have been logged out.</p> -->
                     </div>
                     <input class="w-100 btn btn-lg btn-success mb-3" type="submit" value="Entrar">

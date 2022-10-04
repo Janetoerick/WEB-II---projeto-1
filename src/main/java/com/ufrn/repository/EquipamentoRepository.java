@@ -17,10 +17,21 @@ public interface EquipamentoRepository extends JpaRepository<Equipamento, Intege
     
     List<Equipamento> findBySala(Sala sala);
     
+    List<Equipamento> findBySala_Id(int sala);
+    
     List<Equipamento> findByReservas_Data(LocalDate data);
     //  
     @Query(value = " select e from Equipamento e join e.reservas")
     List<Equipamento> findBySalaDateTimeinReserva();
+    
+//    @Query(value = "select e from Equipamento e join e.reservas r where r.data = :data and (r.horarioInicial >= :hf or r.horarioFinal <= :hi)")
+//    List<Equipamento> testando(@Param("data") LocalDate data, @Param("hi") LocalTime horaInicio, @Param("hf") LocalTime horaFinal);
+    
+//    @Query(value = "SELECT e FROM Equipamento e JOIN e.reservas r where r.data = :data and r.equipamentos")
+//    List<Equipamento> testando(@Param("data") LocalDate data);
+    
+    @Query(value = "SELECT e FROM Equipamento e JOIN e.reservas r where r.id = :id")
+    List<Equipamento> FindByReservaId(@Param("id") int id);
     
 //    @Query(value = " select e from Equipamento e join e.reservas r where e.sala.id = :id_s and r.data = :data and (r.horarioInicial >= :hf or r.horarioFinal <= :hi)")
 //    List<Equipamento> findBySalaDateTimeinReserva(@Param("id_s") int sala_id, @Param("data") LocalDate data ,@Param("hi") LocalTime horaInicio, @Param("hf") LocalTime horaFinal);
