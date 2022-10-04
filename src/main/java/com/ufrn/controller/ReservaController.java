@@ -44,6 +44,7 @@ public class ReservaController {
     @RequestMapping("/pageReservasUser/{id}")
     public String pageReservasUser(@PathVariable("id") String id, Model model) {
         if(id.chars().allMatch( Character::isDigit ) && id != "") {
+            model.addAttribute("id", id);
             model.addAttribute("reservas", reservaService.getAllReservasByIdUser(Integer.parseInt(id)));    
             return "user/ReservasUser";
         }
@@ -88,8 +89,9 @@ public class ReservaController {
     public String apagarSala(@RequestParam String id_usuario, @RequestParam String id_reserva, Model model){
         
         reservaService.deleteById(Integer.parseInt(id_reserva));
+        
         model.addAttribute("id", id_usuario);
-        model.addAttribute("reservas", reservaService.getAllReservas());
+        model.addAttribute("reservas", reservaService.getAllReservasByIdUser(Integer.parseInt(id_usuario)));
         return "user/reservasUser";
     }
     

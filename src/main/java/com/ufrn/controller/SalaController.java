@@ -31,11 +31,8 @@ public class SalaController {
     @RequestMapping("/pageSalas/{id}")
     public String pageSalas(@PathVariable("id") String id, Model model) {
         model.addAttribute("salas", salaService.getAllSalas());
-        model.addAttribute("id", id);    
-        if(usuarioService.findById(Integer.parseInt(id)).getPrioridade() == 0) {
-            return "user/salas";
-        }
-        return "admin/salasAdmin";
+        model.addAttribute("id", id);
+        return "user/salas";
     }
     
     @RequestMapping("/pageSalasAdmin")

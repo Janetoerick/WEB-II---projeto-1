@@ -63,7 +63,7 @@ public class UsuarioController {
     public String loginUsuario(@RequestParam String login, @RequestParam String senha, Model model){
 
         Usuario temp = usuarioService.verifyUser(login, senha);
-        if(temp.getId() > -1){
+        if(temp != null && temp.getId() > -1){
             if(temp.getPrioridade() == 0){
                 model.addAttribute("id", temp.getId());
                 model.addAttribute("salas", salaService.getAllSalas());
@@ -82,12 +82,8 @@ public class UsuarioController {
     
     @RequestMapping("/perfilUsuario/{id}")
     public String perfilUsuario(@PathVariable("id") String id, Model model) {
-        Usuario temp = usuarioService.findById(Integer.parseInt(id));
-        if(temp != null) {
-            model.addAttribute("usuario", temp);
-            return "user/perfilUser";
-        }
-        return "main";
+        model.addAttribute("usuario", usuarioService.findById(Integer.parseInt(id)));
+        return "user/perfilUser";
     }
     
     @RequestMapping("/trocarSenha")

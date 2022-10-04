@@ -24,7 +24,6 @@ public class EquipamentoService {
     public boolean add(Equipamento eq){
         
         //List<Equipamento> equipamentos = equipamentoRepository.findAll();
-        System.out.println("entrou aqui!");
         for (Equipamento equipamento : equipamentoRepository.findAll()) {
             if(equipamento.getSala() == eq.getSala() && 
                     equipamento.getCodigo() == eq.getCodigo()) {

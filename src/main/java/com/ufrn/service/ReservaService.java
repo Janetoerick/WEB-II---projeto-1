@@ -33,41 +33,35 @@ public class ReservaService {
         if(reserva.getData().isBefore(LocalDate.now()) ||
                 reserva.getHorarioInicial().isAfter(reserva.getHorarioFinal()) ||
                 e_1.size() < qntEquipamentos) {
-            System.out.println("entrou no primeiro");
             return false;
         }
         
         
-        System.out.println(reserva.getData() + " | " +  reserva.getHorarioInicial() + " | " +  reserva.getHorarioFinal());
         List<Reserva> r_1 = new ArrayList<>();
         for(Equipamento e: e_1) {
             r_1.addAll(reservaRepository.FindByEquipamentoIdDTITF(e.getId(), reserva.getData(), reserva.getHorarioInicial(), reserva.getHorarioFinal()));
         }
         
-        System.out.println("size r_1:" + r_1.size());
-        Set<Equipamento> e_2 = new HashSet<>();
+        Set<Equipamento> e_2 = new HashSet<Equipamento>();
         for(Reserva e: r_1) {
             e_1.removeAll(equipamentoRepository.FindByReservaId(e.getId()));
         }
-        e_2.addAll(e_1);
         
-        System.out.println(e_2.size() + " || " + qntEquipamentos);
+        for(int i = 0; i < qntEquipamentos; i++)
+            e_2.add(e_1.get(i));
+        
+        //e_2.addAll(e_1);
+        
         if(e_2.size() > qntEquipamentos)
             e_2.remove(0);
         
-        System.out.println(e_2.size() + " || " + qntEquipamentos);
-        System.out.println(e_2.isEmpty());
         if(e_2.isEmpty()) {
-            System.out.println("entrou no segundo");
            return false;
         }
         
         reserva.setEquipamentos(e_2);
         reservaRepository.save(reserva);
-        
-        for(Equipamento x: e_2) {
-            System.out.println("-> " + x.getId());
-        }
+
         
         return true;
     }

@@ -93,7 +93,7 @@
                                 <th scope="col">Data</th>
                                 <th scope="col">Hora de inicio</th>
                                 <th scope="col">Hora de fim</th>
-                                <th scope="col">Código Equipamentos</th>
+                                <th scope="col" style="width: 100px;">Código Equipamentos</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
@@ -105,8 +105,8 @@
                                 <td th:text="${r.data}"></td>
                                 <td th:text="${r.horarioInicial}"></td>
                                 <td th:text="${r.horarioFinal}"></td>
-                                <td th:each="e: ${r.equipamentos}">
-                                    <p th:text="${e.codigo}"></p>
+                                <td th:each="e: ${r.equipamentos}" class="col-12 row justify-content-center">
+                                    <p th:text="${e.codigo}" class="col-1"></p>
                                 </td>
                                 <td><button class="btn btn-danger" th:onclick="'cancelarReserva(' + ${r.id} +')'">Cancelar</button></td>
                             </tr>

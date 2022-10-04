@@ -22,10 +22,12 @@ public class UsuarioService {
 
     public Usuario verifyUser(String login, String senha){
         Usuario temp = usuarioRepository.findByLogin(login);
-        if(temp.getSenha().equals(senha))
-            return temp;
-        
-        temp.setId(-1);
+        if(temp != null) {
+            if(temp.getSenha().equals(senha))
+                return temp;
+            
+            temp.setId(-1);
+        }
         return temp;
     }
     
