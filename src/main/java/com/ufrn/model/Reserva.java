@@ -17,16 +17,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "reserva")
 public class Reserva {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@OneToOne
-	@JoinColumn(name = "usuario_id", referencedColumnName = "id")
-	private Usuario usuario;
 	
 	private LocalDate data;
 	
@@ -46,9 +41,8 @@ public class Reserva {
 	}
 	
 	
-	public Reserva(Usuario usuario, LocalDate data, LocalTime horarioInicial, LocalTime horarioFinal) {
+	public Reserva(LocalDate data, LocalTime horarioInicial, LocalTime horarioFinal) {
         super();
-        this.usuario = usuario;
         this.data = data;
         this.horarioInicial = horarioInicial;
         this.horarioFinal = horarioFinal;
@@ -62,14 +56,6 @@ public class Reserva {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
 	}
 
 	public Set<Equipamento> getEquipamentos() {
