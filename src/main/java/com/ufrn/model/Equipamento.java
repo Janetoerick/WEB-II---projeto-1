@@ -30,7 +30,7 @@ public class Equipamento {
 	@JoinTable(name = "reserva_equipamento",
 	joinColumns = @JoinColumn(name = "equipamento_id"),
 	inverseJoinColumns = @JoinColumn(name = "reserva_id"))
-	private Set<Reserva> reservas;
+	private Set<ReservaIndividual> reservas;
 	
 	@ManyToOne
 	@JoinColumn(name = "sala_id")
@@ -66,11 +66,11 @@ public class Equipamento {
 		this.descricao = descricao;
 	}
 
-	public Set<Reserva> getReservas() {
+	public Set<ReservaIndividual> getReservas() {
 		return reservas;
 	}
 
-	public void setReservas(Set<Reserva> reservas) {
+	public void setReservas(Set<ReservaIndividual> reservas) {
 		this.reservas = reservas;
 	}
 

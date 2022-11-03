@@ -21,19 +21,13 @@ public class Reserva {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	protected Integer id;
 	
-	private LocalDate data;
+	protected LocalDate data;
 	
-	private LocalTime horarioInicial;
+	protected LocalTime horarioInicial;
 	
-	private LocalTime horarioFinal;
-	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
-	@JoinTable(name = "reserva_equipamento",
-	joinColumns = @JoinColumn(name = "reserva_id"),
-	inverseJoinColumns = @JoinColumn(name = "equipamento_id"))
-	private Set<Equipamento> equipamentos;
+	protected LocalTime horarioFinal;
 
 	
 	public Reserva () {
@@ -56,14 +50,6 @@ public class Reserva {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Set<Equipamento> getEquipamentos() {
-		return equipamentos;
-	}
-
-	public void setEquipamentos(Set<Equipamento> equipamentos) {
-		this.equipamentos = equipamentos;
 	}
 
     public LocalDate getData() {

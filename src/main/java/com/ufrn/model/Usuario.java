@@ -11,26 +11,24 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.ufrn.enums.RoleUser;
+
 @Entity
-@Table(name = "usuario")
 public class Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	protected Integer id;
 	
 	@Column(length = 50, nullable = false, unique = true)
-	private String login;
+	protected String login;
 	
 	@Column(length = 50, nullable = false)
-	private String senha;
+	protected String senha;
 
-	private String email;
+	protected String email;
 	
-	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
-	private Set<Reserva> reservas;
-	
-	private int prioridade;
+	protected RoleUser role;
 	
 
 	public Usuario () { 
@@ -67,14 +65,6 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public Set<Reserva> getReservas() {
-		return reservas;
-	}
-
-	public void setReservas(Set<Reserva> reservas) {
-		this.reservas = reservas;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -83,13 +73,13 @@ public class Usuario {
 		this.email = email;
 	}
 
-	public int getPrioridade() {
-		return prioridade;
-	}
+    public RoleUser getRole() {
+        return role;
+    }
 
-	public void setPrioridade(int prioridade) {
-		this.prioridade = prioridade;
-	}
+    public void setRole(RoleUser role) {
+        this.role = role;
+    }
 	
 	
 }

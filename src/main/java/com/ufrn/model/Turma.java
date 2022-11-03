@@ -2,10 +2,16 @@ package com.ufrn.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,21 +24,27 @@ public class Turma {
     
     private String descricao;
     
-    private Usuario professor;
+    @ManyToOne
+    @JoinColumn(name = "professor_id")
+    private UsuarioProfessor professor;
     
-    private List<Usuario> estudantes;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @JoinTable(name = "aluno_turma",
+    joinColumns = @JoinColumn(name = "turma_id"),
+    inverseJoinColumns = @JoinColumn(name = "aluno_id"))
+    private List<UsuarioAluno> alunos;
     
     public Turma() {
         
     }
     
 
-    public Turma(Integer id, String descricao, Usuario professor, List<Usuario> estudantes) {
+    public Turma(Integer id, String descricao, UsuarioProfessor professor, List<UsuarioAluno> alunos) {
         super();
         this.id = id;
         this.descricao = descricao;
         this.professor = professor;
-        this.estudantes = estudantes;
+        this.alunos = alunos;
     }
 
     public Integer getId() {
@@ -51,20 +63,20 @@ public class Turma {
         this.descricao = descricao;
     }
 
-    public Usuario getProfessor() {
+    public UsuarioProfessor getProfessor() {
         return professor;
     }
 
-    public void setProfessor(Usuario professor) {
+    public void setProfessor(UsuarioProfessor professor) {
         this.professor = professor;
     }
 
-    public List<Usuario> getEstudantes() {
-        return estudantes;
+    public List<UsuarioAluno> getEstudantes() {
+        return alunos;
     }
 
-    public void setEstudantes(List<Usuario> estudantes) {
-        this.estudantes = estudantes;
+    public void setEstudantes(List<UsuarioAluno> alunos) {
+        this.alunos = alunos;
     }
     
     
