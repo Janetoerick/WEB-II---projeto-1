@@ -19,7 +19,7 @@ public class ReservaIndividual extends Reserva{
 
     @OneToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
-    private Usuario usuario;
+    private UsuarioAluno usuario;
     
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinTable(name = "reserva_equipamento",
@@ -27,7 +27,7 @@ public class ReservaIndividual extends Reserva{
     inverseJoinColumns = @JoinColumn(name = "equipamento_id"))
     private Set<Equipamento> equipamentos;
 
-    public ReservaIndividual(Usuario usuario, LocalDate data, LocalTime horarioInicial, LocalTime horarioFinal) {
+    public ReservaIndividual(UsuarioAluno usuario, LocalDate data, LocalTime horarioInicial, LocalTime horarioFinal) {
         super();
         this.usuario = usuario;
         this.data = data;
@@ -35,11 +35,11 @@ public class ReservaIndividual extends Reserva{
         this.horarioFinal = horarioFinal;
     }
     
-    public Usuario getUsuario() {
+    public UsuarioAluno getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(UsuarioAluno usuario) {
         this.usuario = usuario;
     }
     

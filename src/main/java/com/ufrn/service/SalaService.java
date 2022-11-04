@@ -1,0 +1,50 @@
+package com.ufrn.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ufrn.exception.RegraNegocioException;
+import com.ufrn.model.Sala;
+import com.ufrn.repository.SalaRepository;
+
+@Service
+public class SalaService {
+
+    @Autowired
+    SalaRepository repository;
+    
+    public Sala save(Sala sala) {
+        if(sala.getNome() == null || sala.getLocal() == null 
+                || sala.getDescricao() == null) {
+            throw new RegraNegocioException("Falta de atributos no objeto Sala");
+        }
+        
+        if(sala.getAndar() < 0)
+            throw new RegraNegocioException("Numero do andar invalido");
+        
+        repository.save(sala);
+        return sala;
+    }
+    
+    public Sala findById(Integer id) {
+        return repository
+                .findById(id)
+                .orElseThrow(() -> new RegraNegocioException("Nao existe sala com o id " + id));
+    }
+    
+    public List<Sala> findAll(){
+        return repository.findAll();
+    }
+    
+    public void deleteById(Integer id) {
+        repository
+        .findById(id)
+        .map(sala -> {
+            repository.delete(sala);
+            return 0;
+        })
+        .orElseThrow(() -> new RegraNegocioException("Nao existe sala com o id " + id));
+    }
+}
