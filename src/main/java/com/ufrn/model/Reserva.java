@@ -16,67 +16,24 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-@Entity
-public class Reserva {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	protected Integer id;
-	
-	protected LocalDate data;
-	
-	protected LocalTime horarioInicial;
-	
-	protected LocalTime horarioFinal;
-
-	
-	public Reserva () {
-		
-	}
-	
-	
-	public Reserva(LocalDate data, LocalTime horarioInicial, LocalTime horarioFinal) {
-        super();
-        this.data = data;
-        this.horarioInicial = horarioInicial;
-        this.horarioFinal = horarioFinal;
-    }
+public interface Reserva {
 
 
+    public Integer getId();
 
-    public Integer getId() {
-		return id;
-	}
+	public void setId(Integer id);
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public LocalDate getData();
 
-    public LocalDate getData() {
-        return data;
-    }
+    public void setData(LocalDate data);
 
-    public void setData(LocalDate data) {
-        this.data = data;
-    }
+    public LocalTime getHorarioInicial();
 
-    public LocalTime getHorarioInicial() {
-        return horarioInicial;
-    }
+    public void setHorarioInicial(LocalTime horarioInicial);
 
-    public void setHorarioInicial(LocalTime horarioInicial) {
-        this.horarioInicial = horarioInicial;
-    }
+    public LocalTime getHorarioFinal();
 
-    public LocalTime getHorarioFinal() {
-        return horarioFinal;
-    }
+    public void setHorarioFinal(LocalTime horarioFinal);
 
-    public void setHorarioFinal(LocalTime horarioFinal) {
-        this.horarioFinal = horarioFinal;
-    }
-
-	
-	
 	
 }

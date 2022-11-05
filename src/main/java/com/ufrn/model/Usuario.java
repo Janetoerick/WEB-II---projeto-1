@@ -13,73 +13,27 @@ import javax.persistence.Table;
 
 import com.ufrn.enums.RoleUser;
 
-@Entity
-public class Usuario {
+public interface Usuario {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	protected Integer id;
-	
-	@Column(length = 50, nullable = false, unique = true)
-	protected String login;
-	
-	@Column(length = 50, nullable = false)
-	protected String senha;
+    
+	public Integer getId();
 
-	protected String email;
-	
-	protected RoleUser role;
-	
+	public void setId(Integer id);
 
-	public Usuario () { 
-		
-	}
+	public String getLogin();
 
-	public Usuario (String login, String email, String senha) { 
-		this.login = login;
-		this.email = email;
-		this.senha = senha;
-	}
-	
-	public Integer getId() {
-		return id;
-	}
+	public void setLogin(String login);
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	public String getSenha();
 
-	public String getLogin() {
-		return login;
-	}
+	public void setSenha(String senha);
 
-	public void setLogin(String login) {
-		this.login = login;
-	}
+	public String getEmail();
 
-	public String getSenha() {
-		return senha;
-	}
+	public void setEmail(String email);
 
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
+    public RoleUser getRole();
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-    public RoleUser getRole() {
-        return role;
-    }
-
-    public void setRole(RoleUser role) {
-        this.role = role;
-    }
-	
+    public void setRole(RoleUser role);
 	
 }
