@@ -47,4 +47,25 @@ public class SalaService {
         })
         .orElseThrow(() -> new RegraNegocioException("Nao existe sala com o id " + id));
     }
+    
+    public Sala update(Integer id, Sala sala) {
+        
+        Sala s = repository.findById(id).orElseThrow(() -> new RegraNegocioException("id inexistente no banco"));
+                
+        if(sala.getNome() == null || sala.getLocal() == null 
+                || sala.getDescricao() == null) {
+            throw new RegraNegocioException("Falta de atributos no objeto Sala");
+        }
+        
+        if(sala.getAndar() < 0)
+            throw new RegraNegocioException("Numero do andar invalido");
+        
+        s.setNome(sala.getNome());
+        s.setLocal(sala.getLocal());
+        s.setDescricao(sala.getDescricao());
+        s.setAndar(sala.getAndar());
+        
+        repository.save(s);
+        return s;
+    }
 }

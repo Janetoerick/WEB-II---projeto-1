@@ -16,6 +16,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ufrn.enums.tipoReserva;
+
 @Entity
 @Table(name = "reserva_individual")
 public class ReservaIndividual implements Reserva {
@@ -30,10 +33,13 @@ public class ReservaIndividual implements Reserva {
 
     private LocalTime horarioFinal;
 
+        
     @OneToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
+    @JsonIgnore
     private UsuarioAluno usuario;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
     @JoinTable(name = "reserva_equipamento", joinColumns = @JoinColumn(name = "reserva_id"), inverseJoinColumns = @JoinColumn(name = "equipamento_id"))
     private Set<Equipamento> equipamentos;

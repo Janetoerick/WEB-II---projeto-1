@@ -15,27 +15,27 @@ public class UsuarioAdmin implements Usuario{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    protected Integer id;
+    private Integer id;
     
-    @Column(length = 50, nullable = false, unique = true)
-    protected String login;
+    @Column(nullable = false, unique = true)
+    private String login;
     
-    @Column(length = 50, nullable = false)
-    protected String senha;
+    private String senha;
 
-    protected String email;
+    private String email;
     
-    protected RoleUser role;
+    private RoleUser role;
     
 
     public UsuarioAdmin () { 
         
     }
 
-    public UsuarioAdmin (String login, String email, String senha) { 
+    public UsuarioAdmin (String login, String senha, String email, RoleUser role) { 
         this.login = login;
-        this.email = email;
         this.senha = senha;
+        this.email = email;
+        this.role = role;
     }
 
     public Integer getId() {

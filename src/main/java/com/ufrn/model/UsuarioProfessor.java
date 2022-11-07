@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.ufrn.enums.RoleUser;
 
 @Entity
@@ -19,17 +21,16 @@ public class UsuarioProfessor implements Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    protected Integer id;
+    private Integer id;
 
-    @Column(length = 50, nullable = false, unique = true)
-    protected String login;
+    @Column(nullable = false, unique = true)
+    private String login;
 
-    @Column(length = 50, nullable = false)
-    protected String senha;
+    private String senha;
 
-    protected String email;
+    private String email;
 
-    protected RoleUser role;
+    private RoleUser role;
 
     @OneToMany(mappedBy = "professor", fetch = FetchType.LAZY)
     private Set<Turma> turmas;
@@ -38,10 +39,11 @@ public class UsuarioProfessor implements Usuario {
 
     }
 
-    public UsuarioProfessor(String login, String email, String senha) {
+    public UsuarioProfessor (String login, String senha, String email, RoleUser role) { 
         this.login = login;
-        this.email = email;
         this.senha = senha;
+        this.email = email;
+        this.role = role;
     }
 
     public Integer getId() {

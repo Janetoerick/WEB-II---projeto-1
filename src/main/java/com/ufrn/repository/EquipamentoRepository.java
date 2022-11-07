@@ -1,9 +1,13 @@
 package com.ufrn.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ufrn.model.Equipamento;
 
 public interface EquipamentoRepository extends JpaRepository<Equipamento,Integer>{
+    
+    List<Equipamento> findBySala_Id(Integer id);
 
 }

@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "turma")
 public class Turma {
@@ -24,10 +26,12 @@ public class Turma {
     
     private String descricao;
     
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "professor_id")
     private UsuarioProfessor professor;
     
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinTable(name = "aluno_turma",
     joinColumns = @JoinColumn(name = "turma_id"),
@@ -71,11 +75,11 @@ public class Turma {
         this.professor = professor;
     }
 
-    public List<UsuarioAluno> getEstudantes() {
+    public List<UsuarioAluno> getAlunos() {
         return alunos;
     }
 
-    public void setEstudantes(List<UsuarioAluno> alunos) {
+    public void setAlunos(List<UsuarioAluno> alunos) {
         this.alunos = alunos;
     }
     

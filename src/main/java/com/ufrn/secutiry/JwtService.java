@@ -7,9 +7,10 @@ import java.util.Date;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.ufrn.model.Usuario;
+import com.ufrn.DTO.CredenciaisDTO;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -20,11 +21,13 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
+    @Value("${security.jwt.expiracao}")
     private String expiracao;
 
+    @Value("${security.jwt.chave-assinatura}")
     private String chaveAssinatura;
     
-    public String gerarToken( Usuario usuario ){
+    public String gerarToken( CredenciaisDTO usuario ){
         long expString = Long.valueOf(expiracao);
         LocalDateTime dataHoraExpiracao = LocalDateTime.now().plusMinutes(expString);
         Instant instant = dataHoraExpiracao.atZone(ZoneId.systemDefault()).toInstant(); //localdatetime to objeto instante
@@ -69,4 +72,5 @@ public class JwtService {
     public String obterLoginUsuario(String token) throws ExpiredJwtException{
         return (String) (obterClaims(token)).getSubject();
     }
+
 }

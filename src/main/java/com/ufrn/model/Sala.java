@@ -28,6 +28,9 @@ public class Sala {
 	
 	@OneToMany(mappedBy = "sala", fetch = FetchType.LAZY)
 	private Set<Equipamento> equipamentos;
+	
+	@OneToMany(mappedBy = "sala", fetch = FetchType.LAZY)
+    private Set<ReservaGrupal> reservas;
 
 	public Sala () {
 		
@@ -109,6 +112,14 @@ public class Sala {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public Set<ReservaGrupal> getReservas() {
+        return reservas;
+    }
+
+    public void setReservas(Set<ReservaGrupal> reservas) {
+        this.reservas = reservas;
     }
 	
 	

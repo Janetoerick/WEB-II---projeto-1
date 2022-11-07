@@ -1,69 +1,101 @@
 package com.ufrn.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-import net.bytebuddy.build.Plugin.Engine.Source.InMemory;
+import com.ufrn.secutiry.JwtAuthFilter;
+import com.ufrn.secutiry.JwtService;
+import com.ufrn.service.UsuarioService;
 
-@Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Bean
+    public OncePerRequestFilter jwtFilter(){
+        return new JwtAuthFilter(jwtService, usuarioService);
+    }
+    
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf().disable() //seguranca entre aplicavao web e api,aqui nossa api é rest
-            .authorizeHttpRequests((authz) -> {
-                try {
-                    authz
-                        .antMatchers("/api/clientes/**")
-                            //.hasRole("USER") 
-                            .hasAnyRole("USER","ADMIN")
-                        .antMatchers("/api/produtos/**")
-                            .hasRole("ADMIN")
-                        .antMatchers("/api/pedidos/**")
-                            //.hasRole("USER")    
-                            .hasAnyRole("USER","ADMIN") 
-                        .antMatchers(HttpMethod.POST, "/api/usuarios/**")
-                            .permitAll()
-                        .anyRequest().authenticated()   ;
-//                    .and() 
-//                        .sessionManagement()
-//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) //sessões sem usuários - TODA REQUISICAO PRECISA DO TOKEN
-//                    .and() //volta a raiz
-//                        .addFilterBefore( jwtFilter(), UsernamePasswordAuthenticationFilter.class);
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                .csrf().disable()
+                .authorizeHttpRequests((authz) -> {
+                    try {
+                        authz
+                                .antMatchers(HttpMethod.POST, "/equipamento/**")
+                                    .hasRole("ADMIN")
+                                .antMatchers(HttpMethod.GET, "/equipamento/**")
+                                    .hasAnyRole("PROFESSOR", "ALUNO", "ADMIN")
+                                .antMatchers(HttpMethod.DELETE, "/equipamento/**")
+                                    .hasRole("ADMIN")
+                                    
+                                .antMatchers(HttpMethod.POST, "/sala/**")
+                                    .hasRole("ADMIN")
+                                .antMatchers(HttpMethod.GET, "/sala/**")
+                                    .hasAnyRole("PROFESSOR", "ALUNO", "ADMIN")
+                                .antMatchers(HttpMethod.DELETE, "/sala/**")
+                                    .hasRole("ADMIN")
+                                .antMatchers(HttpMethod.PUT, "/sala/**")
+                                    .hasRole("ADMIN")
+                                    
+                                .antMatchers(HttpMethod.POST, "/turma/**")
+                                    .hasRole("ADMIN")
+                                .antMatchers(HttpMethod.GET, "/turma/**")
+                                    .hasAnyRole("PROFESSOR", "ALUNO", "ADMIN")
+                                .antMatchers(HttpMethod.DELETE, "/turma/**")
+                                    .hasRole("ADMIN")
+                                .antMatchers(HttpMethod.PUT, "/turma/**")
+                                    .hasAnyRole("ADMIN", "PROFESSOR")
+                                    
+                                .antMatchers(HttpMethod.POST, "/reservaIndividual/**")
+                                    .hasRole("ALUNO")
+                                .antMatchers(HttpMethod.GET, "/reservaIndividual/**")
+                                    .hasAnyRole("ALUNO", "ADMIN")
+                                .antMatchers(HttpMethod.DELETE, "/reservaIndividual/**")
+                                    .hasAnyRole("ALUNO", "ADMIN")                                    
+                                    
+                                
+                                .antMatchers(HttpMethod.POST, "/reservaGrupal/**")
+                                    .hasRole("PROFESSOR")
+                                .antMatchers(HttpMethod.GET, "/reservaGrupal/professor/**")
+                                    .hasAnyRole("PROFESSOR", "USUARIO", "ADMIN")
+                                .antMatchers(HttpMethod.DELETE, "/reservaGrupal/**")
+                                    .hasAnyRole("PROFESSOR", "ADMIN")
+                                    
+                                .antMatchers("/usuario/**")
+                                    .permitAll()
+                                .anyRequest().authenticated()
+                                
+                    .and() 
+                        .sessionManagement()
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
+                        .addFilterBefore( jwtFilter(), UsernamePasswordAuthenticationFilter.class)
+                    .httpBasic();
+                    } catch (Exception e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
-            }
-                
-                 
-            );
+
+                );
+        
         return http.build();
     }
 
-	@Bean
-	public SecurityFilterChain configure(HttpSecurity http) throws Exception {
-		return http
-			.csrf(csrt -> csrt.disable())
-			.authorizeRequests(auth -> {
-				auth.antMatchers("/").permitAll();
-				auth.antMatchers("/user").hasRole("USER");
-				auth.antMatchers("/admin").hasRole("ADMIN");
-			})
-			.httpBasic(Customizer.withDefaults())
-			.build();
-	}
 
 }

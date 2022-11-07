@@ -23,17 +23,16 @@ public class UsuarioAluno implements Usuario{
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    protected Integer id;
+    private Integer id;
     
-    @Column(length = 50, nullable = false, unique = true)
-    protected String login;
-    
-    @Column(length = 50, nullable = false)
-    protected String senha;
+    @Column(nullable = false, unique = true)
+    private String login;
 
-    protected String email;
+    private String senha;
+
+    private String email;
     
-    protected RoleUser role;
+    private RoleUser role;
 
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private Set<ReservaIndividual> reservas;
@@ -50,10 +49,11 @@ public class UsuarioAluno implements Usuario{
         
     }
 
-    public UsuarioAluno (String login, String email, String senha) { 
+    public UsuarioAluno (String login, String senha, String email, RoleUser role) { 
         this.login = login;
-        this.email = email;
         this.senha = senha;
+        this.email = email;
+        this.role = role;
     }
     
     
