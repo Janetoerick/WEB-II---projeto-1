@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import com.ufrn.DTO.EquipamentoDTO;
 import com.ufrn.DTO.EquipamentoReturnDTO;
 import com.ufrn.DTO.SalaDTO;
+import com.ufrn.exception.EquipamentoNotExistException;
 import com.ufrn.exception.RegraNegocioException;
+import com.ufrn.exception.SalaNotExistException;
 import com.ufrn.model.Equipamento;
 import com.ufrn.model.Sala;
 import com.ufrn.repository.EquipamentoRepository;
@@ -27,7 +29,7 @@ public class EquipamentoService {
     public EquipamentoReturnDTO save(EquipamentoDTO eq) {
 
         Sala s = salaRepository.findById(eq.getSala())
-                .orElseThrow(() -> new RegraNegocioException("Codigo da sala inexistente"));
+                .orElseThrow(() -> new SalaNotExistException());
 
         if (eq.getDescricao() == null)
             throw new RegraNegocioException("Equipamento sem campo 'descricao'");
@@ -44,7 +46,7 @@ public class EquipamentoService {
         e.setSala(s);
 
         Equipamento eqm = repository.save(e);
-        
+
         EquipamentoReturnDTO eqReturn = new EquipamentoReturnDTO();
         eqReturn.setId(eqm.getId());
         eqReturn.setCodigo(eq.getCodigo());
@@ -57,10 +59,10 @@ public class EquipamentoService {
     }
 
     public EquipamentoReturnDTO findById(Integer id) {
-        Equipamento e =  repository
+        Equipamento e = repository
                 .findById(id)
-                .orElseThrow(() -> new RegraNegocioException("Nao existe equipamento com id=" + id));
-        
+                .orElseThrow(() -> new EquipamentoNotExistException());
+
         EquipamentoReturnDTO eqDTO = new EquipamentoReturnDTO();
         eqDTO.setId(id);
         eqDTO.setCodigo(e.getCodigo());
@@ -69,16 +71,40 @@ public class EquipamentoService {
         sala.setNome(e.getSala().getNome());
         sala.setLocal(e.getSala().getLocal());
         eqDTO.setSala(sala);
-        
+
         return eqDTO;
     }
 
-    public List<EquipamentoReturnDTO> findAll() {
-        
+    public List<EquipamentoReturnDTO> findBySalaIdAll(Integer id) {
+
         List<EquipamentoReturnDTO> list_return = new ArrayList<>();
-        
+
         List<Equipamento> eqs = repository.findAll();
-        
+
+        for (Equipamento equipamento : eqs) {
+            if(equipamento.getSala().getId() == id) {
+                EquipamentoReturnDTO e = new EquipamentoReturnDTO();
+                e.setId(equipamento.getId());
+                e.setCodigo(equipamento.getCodigo());
+                e.setDescricao(equipamento.getDescricao());
+                SalaDTO sala = new SalaDTO();
+                sala.setNome(equipamento.getSala().getNome());
+                sala.setLocal(equipamento.getSala().getLocal());
+                e.setSala(sala);
+
+                list_return.add(e);    
+            }
+        }
+
+        return list_return;
+    }
+
+    public List<EquipamentoReturnDTO> findAll() {
+
+        List<EquipamentoReturnDTO> list_return = new ArrayList<>();
+
+        List<Equipamento> eqs = repository.findAll();
+
         for (Equipamento equipamento : eqs) {
             EquipamentoReturnDTO e = new EquipamentoReturnDTO();
             e.setId(equipamento.getId());
@@ -88,10 +114,10 @@ public class EquipamentoService {
             sala.setNome(equipamento.getSala().getNome());
             sala.setLocal(equipamento.getSala().getLocal());
             e.setSala(sala);
-            
+
             list_return.add(e);
         }
-        
+
         return list_return;
     }
 
@@ -102,16 +128,16 @@ public class EquipamentoService {
                     repository.delete(e);
                     return 0;
                 })
-                .orElseThrow(() -> new RegraNegocioException("Nao existe equipamento com id=" + id));
+                .orElseThrow(() -> new EquipamentoNotExistException());
     }
 
     public EquipamentoReturnDTO update(Integer id, EquipamentoDTO eq) {
 
         Equipamento e = repository.findById(id)
-                .orElseThrow(() -> new RegraNegocioException("id inexistente no banco"));
+                .orElseThrow(() -> new EquipamentoNotExistException());
 
         Sala s = salaRepository.findById(eq.getSala())
-                .orElseThrow(() -> new RegraNegocioException("Codigo da sala inexistente"));
+                .orElseThrow(() -> new SalaNotExistException());
 
         if (eq.getDescricao() == null)
             throw new RegraNegocioException("Equipamento sem campo 'descricao'");

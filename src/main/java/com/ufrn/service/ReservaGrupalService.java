@@ -1,14 +1,19 @@
 package com.ufrn.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ufrn.DTO.HorarioDTO;
+import com.ufrn.DTO.ReservaGrupalAllDTO;
 import com.ufrn.DTO.ReservaGrupalDTO;
 import com.ufrn.exception.RegraNegocioException;
 import com.ufrn.exception.ReservaInvalidaException;
+import com.ufrn.exception.ReservaNotExistException;
+import com.ufrn.exception.SalaNotExistException;
+import com.ufrn.exception.TurmaNotExistException;
 import com.ufrn.exception.UserNotExistException;
 import com.ufrn.model.Equipamento;
 import com.ufrn.model.ReservaGrupal;
@@ -38,6 +43,10 @@ public class ReservaGrupalService {
 
     public ReservaGrupalDTO save(ReservaGrupalDTO reserva) {
 
+        List<ReservaGrupal> verify_turma = repository.findByTurma_Id(reserva.getTurma());
+        if(verify_turma.size() > 0)
+            throw new RegraNegocioException("A turma ja tem uma reserva");
+        
         HorarioDTO horario = new HorarioDTO(reserva.getData(), reserva.getHorarioInicial(), reserva.getHorarioFinal());
 
         List<Equipamento> equipamentos = equipamentoRepository.findBySala_Id(reserva.getSala());
@@ -52,22 +61,46 @@ public class ReservaGrupalService {
         rg.setHorarioInicial(reserva.getHorarioInicial());
         rg.setHorarioFinal(reserva.getHorarioFinal());
         rg.setSala(salaRepository.findById(reserva.getSala())
-                .orElseThrow(() -> new RegraNegocioException("Sala inexistente com o id " + reserva.getSala())));
+                .orElseThrow(() -> new SalaNotExistException()));
         rg.setTurma(turmaRepository.findById(reserva.getTurma())
-                .orElseThrow(() -> new RegraNegocioException("turma inexistente com o id " + reserva.getTurma())));
+                .orElseThrow(() -> new TurmaNotExistException()));
 
         repository.save(rg);
         return reserva;
     }
+    
+    public List<ReservaGrupalAllDTO> findAll() {
+        List<ReservaGrupal> list_reserva = repository.findAll();
+        List<ReservaGrupalAllDTO> list_return = new ArrayList<>();
+        
+        for (ReservaGrupal r : list_reserva) {
+            ReservaGrupalAllDTO reserva = new ReservaGrupalAllDTO();
+            reserva.setId(r.getId());
+            reserva.setData(r.getData());
+            reserva.setHorarioInicial(r.getHorarioInicial());
+            reserva.setHorarioFinal(r.getHorarioFinal());
+            reserva.setSala(r.getSala().getId());
+            reserva.setTurma(r.getTurma().getId());
+            
+            list_return.add(reserva);
+        }
+        
+        
+        return list_return;
+    }
 
     public List<ReservaGrupal> findBySalaId(Integer id) {
 
+        salaRepository.findById(id).orElseThrow(() -> new SalaNotExistException());
+        
         return repository
                 .findBySala_Id(id);
     }
 
     public List<ReservaGrupal> findByTurmaId(Integer id) {
 
+        turmaRepository.findById(id).orElseThrow(() -> new TurmaNotExistException());
+        
         return repository
                 .findByTurma_Id(id);
     }
@@ -75,7 +108,7 @@ public class ReservaGrupalService {
     public ReservaGrupal update(Integer id, HorarioDTO horario) {
 
         ReservaGrupal res = repository.findById(id)
-                .orElseThrow(() -> new RegraNegocioException("id nao existente nas reservas individuais"));
+                .orElseThrow(() -> new ReservaNotExistException());
 
         if (horario.getData() != null)
             res.setData(horario.getData());

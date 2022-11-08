@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ufrn.exception.RegraNegocioException;
+import com.ufrn.exception.SalaNotExistException;
 import com.ufrn.model.Sala;
 import com.ufrn.repository.SalaRepository;
 
@@ -31,7 +32,7 @@ public class SalaService {
     public Sala findById(Integer id) {
         return repository
                 .findById(id)
-                .orElseThrow(() -> new RegraNegocioException("Nao existe sala com o id " + id));
+                .orElseThrow(() -> new SalaNotExistException());
     }
     
     public List<Sala> findAll(){
@@ -45,12 +46,12 @@ public class SalaService {
             repository.delete(sala);
             return 0;
         })
-        .orElseThrow(() -> new RegraNegocioException("Nao existe sala com o id " + id));
+        .orElseThrow(() -> new SalaNotExistException());
     }
     
     public Sala update(Integer id, Sala sala) {
         
-        Sala s = repository.findById(id).orElseThrow(() -> new RegraNegocioException("id inexistente no banco"));
+        Sala s = repository.findById(id).orElseThrow(() -> new SalaNotExistException());
                 
         if(sala.getNome() == null || sala.getLocal() == null 
                 || sala.getDescricao() == null) {

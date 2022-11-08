@@ -39,6 +39,11 @@ public class EquipamentoController {
         return service.findById(id);
     }
     
+    @GetMapping("/sala/{id}")
+    public List<EquipamentoReturnDTO> getBySalaId( @PathVariable Integer id ){
+        return service.findBySalaIdAll(id);
+    }
+    
     @GetMapping
     public List<EquipamentoReturnDTO> getAll(){
         return service.findAll();
@@ -50,8 +55,8 @@ public class EquipamentoController {
         return equipamento;
     }
     
-    @DeleteMapping
-    public void removeById(@RequestBody Integer id) {
+    @DeleteMapping("{id}")
+    public void removeById(@PathVariable Integer id) {
         service.deleteById(id);
     }
 }

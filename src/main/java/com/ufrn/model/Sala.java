@@ -2,6 +2,7 @@ package com.ufrn.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,10 +27,10 @@ public class Sala {
 	
 	private String descricao;
 	
-	@OneToMany(mappedBy = "sala", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "sala", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private Set<Equipamento> equipamentos;
 	
-	@OneToMany(mappedBy = "sala", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "sala", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<ReservaGrupal> reservas;
 
 	public Sala () {

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ufrn.DTO.HorarioDTO;
+import com.ufrn.DTO.ReservaGrupalAllDTO;
 import com.ufrn.DTO.ReservaGrupalDTO;
 import com.ufrn.model.ReservaGrupal;
 import com.ufrn.model.ReservaIndividual;
@@ -31,6 +32,11 @@ public class ReservaGrupalController {
     @ResponseStatus(HttpStatus.CREATED)
     public ReservaGrupalDTO save( @RequestBody ReservaGrupalDTO reserva ){
         return serviceGrupal.save(reserva);
+    }
+    
+    @GetMapping
+    public List<ReservaGrupalAllDTO> findAll(){
+        return serviceGrupal.findAll();
     }
     
     @GetMapping("/sala/{id}")

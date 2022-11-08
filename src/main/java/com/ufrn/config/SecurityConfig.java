@@ -42,6 +42,8 @@ public class SecurityConfig {
                                     .hasAnyRole("PROFESSOR", "ALUNO", "ADMIN")
                                 .antMatchers(HttpMethod.DELETE, "/equipamento/**")
                                     .hasRole("ADMIN")
+                                .antMatchers(HttpMethod.PUT, "/equipamento/**")
+                                    .hasRole("ADMIN")
                                     
                                 .antMatchers(HttpMethod.POST, "/sala/**")
                                     .hasRole("ADMIN")
@@ -66,7 +68,9 @@ public class SecurityConfig {
                                 .antMatchers(HttpMethod.GET, "/reservaIndividual/**")
                                     .hasAnyRole("ALUNO", "ADMIN")
                                 .antMatchers(HttpMethod.DELETE, "/reservaIndividual/**")
-                                    .hasAnyRole("ALUNO", "ADMIN")                                    
+                                    .hasAnyRole("ALUNO", "ADMIN")   
+                                .antMatchers(HttpMethod.PUT, "/reservaIndividual/**")
+                                    .hasRole("ALUNO")
                                     
                                 
                                 .antMatchers(HttpMethod.POST, "/reservaGrupal/**")
@@ -75,6 +79,8 @@ public class SecurityConfig {
                                     .hasAnyRole("PROFESSOR", "USUARIO", "ADMIN")
                                 .antMatchers(HttpMethod.DELETE, "/reservaGrupal/**")
                                     .hasAnyRole("PROFESSOR", "ADMIN")
+                                .antMatchers(HttpMethod.PUT, "/reservaGrupal/**")
+                                    .hasRole("PROFESSOR")
                                     
                                 .antMatchers("/usuario/**")
                                     .permitAll()

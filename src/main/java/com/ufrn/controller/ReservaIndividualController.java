@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ufrn.DTO.EquipamentoReservaDTO;
 import com.ufrn.DTO.HorarioDTO;
+import com.ufrn.DTO.ReservaIndividualAllDTO;
 import com.ufrn.DTO.ReservaIndividualDTO;
 import com.ufrn.enums.tipoReserva;
 import com.ufrn.exception.ReservaInvalidaException;
@@ -45,6 +46,11 @@ public class ReservaIndividualController {
     @GetMapping("/aluno/{id}")
     public List<ReservaIndividual> findByAlunoId( @PathVariable Integer id){
         return serviceIndividual.findByAlunoId(id);
+    }
+    
+    @GetMapping
+    public List<ReservaIndividualAllDTO> findAll(){
+        return serviceIndividual.findAll();
     }
     
     @PutMapping("{id}")

@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import com.ufrn.DTO.TurmaDTO;
 import com.ufrn.DTO.UserDTO;
 import com.ufrn.exception.RegraNegocioException;
+import com.ufrn.exception.TurmaNotExistException;
+import com.ufrn.exception.UserNameNotFoundException;
+import com.ufrn.exception.UsuarioNotExistException;
 import com.ufrn.model.Turma;
 import com.ufrn.model.UsuarioAluno;
 import com.ufrn.model.UsuarioProfessor;
@@ -34,7 +37,7 @@ public class TurmaService {
         
         UsuarioProfessor professor = (UsuarioProfessor) professorRepository
                 .findByLogin(turma.getProfessor().getLogin())
-                .orElseThrow(() -> new RegraNegocioException("Professor nao existe!"));
+                .orElseThrow(() -> new UsuarioNotExistException());
         
         Turma t = new Turma();
         t.setDescricao(turma.getDescricao());
@@ -49,7 +52,7 @@ public class TurmaService {
                 t.setAlunos(list_aluno);
                 return 0;
             })
-            .orElseThrow(() -> new RegraNegocioException("Login de aluno nao existe! " + aluno.getLogin()));
+            .orElseThrow(() -> new UserNameNotFoundException());
         }
         repository.save(t);
         return turma;
@@ -58,7 +61,7 @@ public class TurmaService {
     public Turma findById(Integer id) {
         return repository
                 .findById(id)
-                .orElseThrow(() -> new RegraNegocioException("Turma com id " + id + " nao existente"));
+                .orElseThrow(() -> new TurmaNotExistException());
     }
     
     public List<Turma> findAll(){
@@ -72,7 +75,7 @@ public class TurmaService {
             repository.delete(turma);
             return true;
         })
-        .orElseThrow(() -> new RegraNegocioException("Turma com id " + id + " nao existente"));
+        .orElseThrow(() -> new TurmaNotExistException());
     }
     
     public TurmaDTO update(Integer id, TurmaDTO turma) {
@@ -82,9 +85,9 @@ public class TurmaService {
         
         UsuarioProfessor professor = (UsuarioProfessor) professorRepository
                 .findByLogin(turma.getProfessor().getLogin())
-                .orElseThrow(() -> new RegraNegocioException("Professor nao existe!"));
+                .orElseThrow(() -> new UserNameNotFoundException());
         
-        Turma t = repository.findById(id).orElseThrow(() -> new RegraNegocioException("Id inexistente no banco"));
+        Turma t = repository.findById(id).orElseThrow(() -> new TurmaNotExistException());
         
         
         t.setDescricao(turma.getDescricao());
@@ -99,7 +102,7 @@ public class TurmaService {
                 t.setAlunos(list_aluno);
                 return 0;
             })
-            .orElseThrow(() -> new RegraNegocioException("Login de aluno nao existe! " + aluno.getLogin()));
+            .orElseThrow(() -> new UserNameNotFoundException());
         }
         repository.save(t);
         return turma;

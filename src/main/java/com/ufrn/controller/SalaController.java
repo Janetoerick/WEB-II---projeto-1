@@ -47,8 +47,8 @@ public class SalaController {
         return s;
     }
     
-    @DeleteMapping
-    public void removeById(@RequestBody Integer id) {
+    @DeleteMapping("{id}")
+    public void removeById(@PathVariable Integer id) {
         service.deleteById(id);
     }
 }

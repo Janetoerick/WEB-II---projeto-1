@@ -72,7 +72,8 @@ public class ReservaService {
         
         for (ReservaGrupal rg : reserva_g) {
             if(rg.getData().equals(horario.getData()) && !(rg.getHorarioInicial().isAfter(horario.getHorarioFinal())
-                    || rg.getHorarioFinal().isBefore(horario.getHorarioInicial()))) {
+                    || rg.getHorarioFinal().isBefore(horario.getHorarioInicial())) &&
+                    !(rg.getHorarioInicial().equals(horario.getHorarioFinal()) || rg.getHorarioFinal().equals(horario.getHorarioInicial()))) {
                 reserva_g2.add(rg);
             }
         }
@@ -85,7 +86,6 @@ public class ReservaService {
                         .orElseThrow(() -> new RegraNegocioException("Erro no servidor!!"));
                 for (Equipamento e : sala.getEquipamentos()) {
                     if(e.getId() == equipamento_id) {
-                        System.out.println("entrou no segundo !!");
                         return false;
                     }
                         
