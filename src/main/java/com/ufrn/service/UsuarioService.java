@@ -68,8 +68,6 @@ public class UsuarioService implements UserDetailsService {
             UsuarioAdmin temp = new UsuarioAdmin(usuario.getLogin(), usuario.getSenha(), 
                     usuario.getEmail(), usuario.getRole());
             
-            System.out.println("-> " + temp.getLogin() + " | " + temp.getSenha() + " | " 
-                    + temp.getEmail() + " | " + temp.getRole());
             repositoryAdmin.save(temp);
         } else if (usuario.getRole() == ALUNO) {
             UsuarioAluno temp = new UsuarioAluno(usuario.getLogin(), usuario.getSenha(), 
