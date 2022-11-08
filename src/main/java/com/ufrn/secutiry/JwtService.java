@@ -30,17 +30,17 @@ public class JwtService {
     public String gerarToken( CredenciaisDTO usuario ){
         long expString = Long.valueOf(expiracao);
         LocalDateTime dataHoraExpiracao = LocalDateTime.now().plusMinutes(expString);
-        Instant instant = dataHoraExpiracao.atZone(ZoneId.systemDefault()).toInstant(); //localdatetime to objeto instante
-        Date data = Date.from(instant); //a forma de passar para o jwt a data de expiração 
+        Instant instant = dataHoraExpiracao.atZone(ZoneId.systemDefault()).toInstant();
+        Date data = Date.from(instant); 
 
-        //chave de assinatura 
+ 
         SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(chaveAssinatura));
 
-        return Jwts //retorna o jwt
+        return Jwts 
                 .builder()
-                .setSubject(usuario.getLogin()) //colocar informação útil para o token
-                .setExpiration(data) //data de expieração
-                .signWith(key) //assinatura do token (recebe parametro key)
+                .setSubject(usuario.getLogin())
+                .setExpiration(data) 
+                .signWith(key)
                 .compact();
     }
     
