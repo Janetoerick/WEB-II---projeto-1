@@ -13,3 +13,5 @@ Utilizando Spring boot, com Spring security e JWT.
 - Sala
 - Turma
 - Equipamento
+
+![alt text](https://github.com/Janetoerick/WEBII/blob/project2/diagrams/diagram%20class%20model.png)
