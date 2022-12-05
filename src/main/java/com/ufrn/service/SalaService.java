@@ -35,6 +35,12 @@ public class SalaService {
                 .orElseThrow(() -> new SalaNotExistException());
     }
     
+    public List<Sala> findByLocal(String local) {
+        return repository
+                .findByLocal(local);
+    }
+
+    
     public List<Sala> findAll(){
         return repository.findAll();
     }

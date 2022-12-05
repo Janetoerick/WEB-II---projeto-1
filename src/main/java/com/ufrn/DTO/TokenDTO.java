@@ -10,15 +10,18 @@ import lombok.NoArgsConstructor;
 public class TokenDTO {
     private String login;
     private String token;
+    private String typeUser;
     
     
     
-    public TokenDTO(String login, String token) {
+    
+    public TokenDTO(String login, String token, String typeUser) {
         super();
         this.login = login;
         this.token = token;
+        this.typeUser = typeUser;
     }
-    
+
     public String getLogin() {
         return login;
     }
@@ -31,6 +34,15 @@ public class TokenDTO {
     public void setToken(String token) {
         this.token = token;
     }
+
+    public String getTypeUser() {
+        return typeUser;
+    }
+
+    public void setTypeUser(String typeUser) {
+        this.typeUser = typeUser;
+    }
+    
     
     
 }

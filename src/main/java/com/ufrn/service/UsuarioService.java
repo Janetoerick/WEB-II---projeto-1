@@ -9,9 +9,11 @@ import org.springframework.stereotype.Component;
 
 import com.ufrn.DTO.CreateUsuarioDTO;
 import com.ufrn.DTO.CredenciaisDTO;
+import com.ufrn.DTO.passwordAttDTO;
 import com.ufrn.enums.RoleUser;
 import com.ufrn.exception.RegraNegocioException;
 import com.ufrn.exception.SenhaInvalidaException;
+import com.ufrn.exception.UsuarioNotExistException;
 import com.ufrn.model.Usuario;
 import com.ufrn.model.UsuarioAdmin;
 import com.ufrn.model.UsuarioAluno;
@@ -84,6 +86,30 @@ public class UsuarioService implements UserDetailsService {
         return usuario;
     }
     
+    public String typeUser(String login) {
+        
+        for (UsuarioAdmin u : repositoryAdmin.findAll()) {
+            if(u.getLogin().equals(login)) {
+                return "admin";
+            }
+        }
+        
+        for (UsuarioAluno u : repositoryAluno.findAll()) {
+            if(u.getLogin().equals(login)) {
+                return "aluno";
+            }
+        }
+        
+        for (UsuarioProfessor u : repositoryProfessor.findAll()) {
+            if(u.getLogin().equals(login)) {
+                return "professor";
+            }
+        }
+        
+        throw new UsuarioNotExistException();
+    }
+    
+    
     public UserDetails autenticar(CredenciaisDTO usuario) {
         
         UserDetails user = loadUserByUsername(usuario.getLogin());
@@ -144,6 +170,49 @@ public class UsuarioService implements UserDetailsService {
 
         throw new RegraNegocioException("usuario invalido");
         
+    }
+    
+    public passwordAttDTO attPassword( passwordAttDTO passworddto) {
+        
+        if(!passworddto.getNova_senha().equals(passworddto.getConfirmarSenha())) {
+            throw new RegraNegocioException("Senhas não coincidem");
+        }
+        
+        if(passworddto.getTypeUser().equals("aluno")) {
+          UsuarioAluno user = repositoryAluno.findByLogin(passworddto.getLogin())
+                  .orElseThrow(() -> new UsuarioNotExistException());
+          
+          if(user.getSenha().equals(passworddto.getSenha_atual())) {
+              user.setSenha(passworddto.getNova_senha());
+          } else {
+              throw new RegraNegocioException("Senha atual errada!");
+          }
+          
+          repositoryAluno.save(user);
+        } else if(passworddto.getTypeUser().equals("professor")) {
+            UsuarioProfessor user = repositoryProfessor.findByLogin(passworddto.getLogin())
+                    .orElseThrow(() -> new UsuarioNotExistException());
+            
+            if(user.getSenha().equals(passworddto.getSenha_atual())) {
+                user.setSenha(passworddto.getNova_senha());
+            } else {
+                throw new RegraNegocioException("Senha atual errada!");
+            }
+            
+            repositoryProfessor.save(user);
+        } else if(passworddto.getTypeUser().equals("admin")) {
+            UsuarioAdmin user = repositoryAdmin.findByLogin(passworddto.getLogin())
+                    .orElseThrow(() -> new UsuarioNotExistException());
+            
+            if(user.getSenha().equals(passworddto.getSenha_atual())) {
+                user.setSenha(passworddto.getNova_senha());
+            } else {
+                throw new RegraNegocioException("Senha atual errada!");
+            }
+            
+            repositoryAdmin.save(user);
+        }
+        return passworddto;
     }
     
     

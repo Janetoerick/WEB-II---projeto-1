@@ -37,6 +37,11 @@ public class TurmaController {
         return service.findById(id);
     }
     
+    @GetMapping("/professor/{login}")
+    public List<Turma> getByProfessorLogin( @PathVariable String login ){
+        return service.findByProfessorLogin(login);
+    }
+    
     @GetMapping
     public List<Turma> getAll(){
         return service.findAll();

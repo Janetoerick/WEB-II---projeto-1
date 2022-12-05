@@ -18,6 +18,7 @@ import com.ufrn.DTO.EquipamentoReservaDTO;
 import com.ufrn.DTO.HorarioDTO;
 import com.ufrn.DTO.ReservaIndividualAllDTO;
 import com.ufrn.DTO.ReservaIndividualDTO;
+import com.ufrn.DTO.ReservaIndividualInfoDTO;
 import com.ufrn.enums.tipoReserva;
 import com.ufrn.exception.ReservaInvalidaException;
 import com.ufrn.model.ReservaGrupal;
@@ -46,6 +47,11 @@ public class ReservaIndividualController {
     @GetMapping("/aluno/{id}")
     public List<ReservaIndividual> findByAlunoId( @PathVariable Integer id){
         return serviceIndividual.findByAlunoId(id);
+    }
+    
+    @GetMapping("/aluno/login/{login}")
+    public List<ReservaIndividualInfoDTO> findByAlunoLogin( @PathVariable String login){
+        return serviceIndividual.findByAlunoLogin(login);
     }
     
     @GetMapping

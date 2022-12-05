@@ -2,23 +2,31 @@ package com.ufrn.DTO;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
-import lombok.AllArgsConstructor;
+import com.ufrn.model.Sala;
+import com.ufrn.model.Turma;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class ReservaIndividualDTO {
+public class ReservaGrupalInformationDTO {
+
+    private Integer id;
     private LocalDate data;
     private LocalTime horarioInicial;
     private LocalTime horarioFinal;
-    private String aluno;
-    private Integer sala;
-    private int qntEquipamentos;
+    private Turma turma;
+    private Sala sala;
     
+    
+    public Integer getId() {
+        return id;
+    }
+    public void setId(Integer id) {
+        this.id = id;
+    }
     public LocalDate getData() {
         return data;
     }
@@ -37,25 +45,19 @@ public class ReservaIndividualDTO {
     public void setHorarioFinal(LocalTime horarioFinal) {
         this.horarioFinal = horarioFinal;
     }
-    public String getAluno() {
-        return aluno;
+    public Turma getTurma() {
+        return turma;
     }
-    public void setAluno(String aluno) {
-        this.aluno = aluno;
+    public void setTurma(Turma turma) {
+        this.turma = turma;
     }
-    
-    public Integer getSala() {
+    public Sala getSala() {
         return sala;
     }
-    public void setSala(Integer sala) {
+    public void setSala(Sala sala) {
         this.sala = sala;
     }
-    public int getQntEquipamentos() {
-        return qntEquipamentos;
-    }
-    public void setQntEquipamentos(int qntEquipamentos) {
-        this.qntEquipamentos = qntEquipamentos;
-    }
+    
     
     
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ufrn.DTO.HorarioDTO;
 import com.ufrn.DTO.ReservaGrupalAllDTO;
 import com.ufrn.DTO.ReservaGrupalDTO;
+import com.ufrn.DTO.ReservaGrupalInformationDTO;
 import com.ufrn.model.ReservaGrupal;
 import com.ufrn.model.ReservaIndividual;
 import com.ufrn.service.ReservaGrupalService;
@@ -45,8 +46,18 @@ public class ReservaGrupalController {
     }
     
     @GetMapping("/turma/{id}")
-    public List<ReservaGrupal> findByTurmaId( @PathVariable Integer id){
+    public List<ReservaGrupalInformationDTO> findByTurmaId( @PathVariable Integer id){
         return serviceGrupal.findByTurmaId(id);
+    }
+    
+    @GetMapping("/aluno/{login}")
+    public List<ReservaGrupalInformationDTO> findByAlunoLogin( @PathVariable String login){
+        return serviceGrupal.findByAlunoLogin(login);
+    }
+    
+    @GetMapping("/professor/{login}")
+    public List<ReservaGrupalInformationDTO> findByProfessorLogin( @PathVariable String login){
+        return serviceGrupal.findByProfessorLogin(login);
     }
     
     @PutMapping("{id}")

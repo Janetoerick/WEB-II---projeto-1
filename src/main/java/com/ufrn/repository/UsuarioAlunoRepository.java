@@ -9,5 +9,5 @@ import com.ufrn.model.UsuarioAluno;
 
 public interface UsuarioAlunoRepository extends JpaRepository<UsuarioAluno,Integer>{
 
-    Optional<Usuario> findByLogin(String login);
+    Optional<UsuarioAluno> findByLogin(String login);
 }

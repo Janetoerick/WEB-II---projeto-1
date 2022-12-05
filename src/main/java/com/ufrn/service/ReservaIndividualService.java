@@ -12,6 +12,7 @@ import com.ufrn.DTO.EquipamentoReservaDTO;
 import com.ufrn.DTO.HorarioDTO;
 import com.ufrn.DTO.ReservaIndividualAllDTO;
 import com.ufrn.DTO.ReservaIndividualDTO;
+import com.ufrn.DTO.ReservaIndividualInfoDTO;
 import com.ufrn.exception.EquipamentoNotExistException;
 import com.ufrn.exception.RegraNegocioException;
 import com.ufrn.exception.ReservaInvalidaException;
@@ -20,6 +21,7 @@ import com.ufrn.exception.UserNotExistException;
 import com.ufrn.exception.UsuarioNotExistException;
 import com.ufrn.model.Equipamento;
 import com.ufrn.model.ReservaIndividual;
+import com.ufrn.model.UsuarioAluno;
 import com.ufrn.repository.EquipamentoRepository;
 import com.ufrn.repository.ReservaIndividualRepository;
 import com.ufrn.repository.UsuarioAlunoRepository;
@@ -41,7 +43,7 @@ public class ReservaIndividualService {
 
     public ReservaIndividual save(ReservaIndividualDTO reserva) {
 
-        List<ReservaIndividual> verify_user = repository.findByUsuario_Id(reserva.getAluno()); 
+        List<ReservaIndividual> verify_user = repository.findByUsuario_Login(reserva.getAluno()); 
         if(verify_user.size() > 0)
             throw new RegraNegocioException("Usuario ja tem uma reserva!");
         
@@ -49,22 +51,29 @@ public class ReservaIndividualService {
 
         Set<Equipamento> eqs = new HashSet<>();
 
-        for (EquipamentoReservaDTO equipamento : reserva.getEquipamentos()) {
-            boolean verify = service.verificarDisponibilidade(horario, equipamento.getId()); 
-            if (!verify) {
-                throw new ReservaInvalidaException();
-            } else {
-                eqs.add(equipamentoRepository.findById(equipamento.getId()).orElseThrow(
-                        () -> new EquipamentoNotExistException()));
-            }
+        for (Equipamento equipamento : equipamentoRepository.findAll()) {
+            if(equipamento.getSala().getId() == reserva.getSala()) {
+                boolean verify = service.verificarDisponibilidade(horario, equipamento.getId()); 
+                if (!verify) {
+                    throw new ReservaInvalidaException();
+                } else {
+                    eqs.add(equipamentoRepository.findById(equipamento.getId()).orElseThrow(
+                            () -> new EquipamentoNotExistException()));
+                    if(eqs.size() == reserva.getQntEquipamentos()) {
+                        break;
+                    }
+                }    
+            }            
         }
+        if(eqs.size() != reserva.getQntEquipamentos())
+            throw new RegraNegocioException("Quantidade de equipamentos não disponíveis na sala");
 
         ReservaIndividual r = new ReservaIndividual();
         r.setData(reserva.getData());
         r.setHorarioInicial(reserva.getHorarioInicial());
         r.setHorarioFinal(reserva.getHorarioFinal());
         r.setEquipamentos(eqs);
-        r.setUsuario(alunoRepository.findById(reserva.getAluno())
+        r.setUsuario(alunoRepository.findByLogin(reserva.getAluno())
                 .orElseThrow(() -> new UsuarioNotExistException()));
 
         repository.save(r);
@@ -77,6 +86,40 @@ public class ReservaIndividualService {
         
         return repository
                 .findByUsuario_Id(id);
+    }
+    
+    public List<ReservaIndividualInfoDTO> findByAlunoLogin(String login) {
+
+        alunoRepository.findByLogin(login).orElseThrow(() -> new UserNotExistException());
+        
+        List<ReservaIndividualInfoDTO> list_return = new ArrayList<>();
+        
+        List<ReservaIndividual> reserva = repository.findByUsuario_Login(login);
+        
+        for (ReservaIndividual ri : reserva) {
+            ReservaIndividualInfoDTO reservadto = new ReservaIndividualInfoDTO();
+            reservadto.setId(ri.getId());
+            reservadto.setData(ri.getData());
+            reservadto.setHorarioInicial(ri.getHorarioInicial());
+            reservadto.setHorarioFinal(ri.getHorarioFinal());
+            List<EquipamentoReservaDTO> list_eq = new ArrayList<>();
+            
+            for (Equipamento e : ri.getEquipamentos()) {
+                if(list_eq.size() < 1) {
+                    reservadto.setAndar_sala(e.getSala().getAndar());
+                    reservadto.setLocal_sala(e.getSala().getLocal());
+                    reservadto.setNome_sala(e.getSala().getNome());                    
+                }
+                EquipamentoReservaDTO eq = new EquipamentoReservaDTO();
+                eq.setId(e.getCodigo());
+                list_eq.add(eq);
+            }
+            reservadto.setEquipamentos(list_eq);
+            
+            list_return.add(reservadto);
+        }
+        
+        return list_return;
     }
     
     public List<ReservaIndividualAllDTO> findAll() {
@@ -108,16 +151,16 @@ public class ReservaIndividualService {
     public ReservaIndividual update(Integer id, HorarioDTO horario) {
 
         ReservaIndividual res = repository.findById(id).orElseThrow(() -> new ReservaNotExistException());
-        
-        if(horario.getData ()!= null)
-            res.setData(horario.getData());
-        
-        if(horario.getHorarioInicial() != null)
-            res.setHorarioInicial(horario.getHorarioInicial());
-        
-        if(horario.getHorarioFinal() != null)
-            res.setHorarioFinal(horario.getHorarioFinal());
 
+        boolean verify = service.verificarDisponibilidade(horario, id); 
+        if (!verify) {
+            throw new ReservaInvalidaException();
+        }
+        
+        res.setData(horario.getData());
+        res.setHorarioInicial(horario.getHorarioInicial());
+        res.setHorarioFinal(horario.getHorarioFinal());
+        
         repository.save(res);
         return res;
         

@@ -64,6 +64,13 @@ public class TurmaService {
                 .orElseThrow(() -> new TurmaNotExistException());
     }
     
+    
+    public List<Turma> findByProfessorLogin(String login) {
+        return repository
+                .findByProfessor_Login(login);
+    }
+    
+    
     public List<Turma> findAll(){
         return repository.findAll();
     }

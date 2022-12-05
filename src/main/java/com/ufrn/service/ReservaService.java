@@ -1,6 +1,7 @@
 package com.ufrn.service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,12 @@ public class ReservaService {
         
         if(horario.getHorarioInicial().isAfter(horario.getHorarioFinal()))
             throw new RegraNegocioException("Horarios irregulares!");
+        
+        if(horario.getData().isEqual(LocalDate.now())) {
+            if(horario.getHorarioInicial().isBefore(LocalTime.now())) {
+                throw new RegraNegocioException("Horarios irregulares!");
+            }
+        }
     }
     
     public boolean verificarDisponibilidade(HorarioDTO horario, Integer equipamento_id) {

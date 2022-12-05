@@ -36,6 +36,11 @@ public class SalaController {
         return service.findById(id);
     }
     
+    @GetMapping("/local/{local}")
+    public List<Sala> getByLocal( @PathVariable String local ){
+        return service.findByLocal(local);
+    }
+    
     @GetMapping
     public List<Sala> getAll(){
         return service.findAll();

@@ -82,8 +82,11 @@ public class SecurityConfig {
                                 .antMatchers(HttpMethod.PUT, "/reservaGrupal/**")
                                     .hasRole("PROFESSOR")
                                     
-                                .antMatchers("/usuario/**")
-                                    .permitAll()
+                                .antMatchers(HttpMethod.PUT, "/configUser/**")
+                                    .hasAnyRole("PROFESSOR", "USUARIO", "ADMIN")
+                                    
+                                .antMatchers(HttpMethod.POST, "/usuario/**")
+                                    .permitAll()    
                                 .anyRequest().authenticated()
                                 
                     .and() 
