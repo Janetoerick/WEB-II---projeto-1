@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ufrn.DTO.SalaUpdatedDTO;
 import com.ufrn.model.Sala;
 import com.ufrn.service.SalaService;
 
@@ -47,7 +48,7 @@ public class SalaController {
     }
     
     @PutMapping("{id}")
-    public Sala update( @PathVariable Integer id, @RequestBody Sala sala ){
+    public Sala update( @PathVariable Integer id, @RequestBody SalaUpdatedDTO sala ){
         Sala s = service.update(id, sala);
         return s;
     }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ufrn.DTO.TurmaBasicDTO;
 import com.ufrn.DTO.TurmaDTO;
 import com.ufrn.model.Turma;
 import com.ufrn.service.TurmaService;
@@ -43,12 +44,12 @@ public class TurmaController {
     }
     
     @GetMapping
-    public List<Turma> getAll(){
+    public List<TurmaBasicDTO> getAll(){
         return service.findAll();
     }
     
     @PutMapping("{id}")
-    public TurmaDTO Update( @PathVariable Integer id, @RequestBody TurmaDTO turma){
+    public TurmaBasicDTO Update( @PathVariable Integer id, @RequestBody TurmaBasicDTO turma){
         return service.update(id, turma);
     }
     

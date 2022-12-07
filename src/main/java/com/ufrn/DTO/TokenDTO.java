@@ -11,16 +11,7 @@ public class TokenDTO {
     private String login;
     private String token;
     private String typeUser;
-    
-    
-    
-    
-    public TokenDTO(String login, String token, String typeUser) {
-        super();
-        this.login = login;
-        this.token = token;
-        this.typeUser = typeUser;
-    }
+
 
     public String getLogin() {
         return login;

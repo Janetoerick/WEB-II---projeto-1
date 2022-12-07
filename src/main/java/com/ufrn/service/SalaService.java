@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ufrn.DTO.SalaUpdatedDTO;
 import com.ufrn.exception.RegraNegocioException;
 import com.ufrn.exception.SalaNotExistException;
 import com.ufrn.model.Sala;
@@ -55,7 +56,7 @@ public class SalaService {
         .orElseThrow(() -> new SalaNotExistException());
     }
     
-    public Sala update(Integer id, Sala sala) {
+    public Sala update(Integer id, SalaUpdatedDTO sala) {
         
         Sala s = repository.findById(id).orElseThrow(() -> new SalaNotExistException());
                 

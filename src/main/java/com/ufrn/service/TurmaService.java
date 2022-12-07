@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ufrn.DTO.TurmaBasicDTO;
 import com.ufrn.DTO.TurmaDTO;
 import com.ufrn.DTO.UserDTO;
 import com.ufrn.exception.RegraNegocioException;
@@ -36,7 +37,7 @@ public class TurmaService {
             throw new RegraNegocioException("Campos em falta!");
         
         UsuarioProfessor professor = (UsuarioProfessor) professorRepository
-                .findByLogin(turma.getProfessor().getLogin())
+                .findByLogin(turma.getProfessor())
                 .orElseThrow(() -> new UsuarioNotExistException());
         
         Turma t = new Turma();
@@ -44,8 +45,8 @@ public class TurmaService {
         t.setProfessor(professor);
         t.setAlunos(new ArrayList<>());
         
-        for (UserDTO aluno : turma.getAlunos()) {
-            alunoRepository.findByLogin(aluno.getLogin())
+        for (String aluno : turma.getAlunos()) {
+            alunoRepository.findByLogin(aluno)
             .map(a -> {
                 List<UsuarioAluno> list_aluno = t.getAlunos();
                 list_aluno.add((UsuarioAluno) a);
@@ -71,8 +72,25 @@ public class TurmaService {
     }
     
     
-    public List<Turma> findAll(){
-        return repository.findAll();
+    public List<TurmaBasicDTO> findAll(){
+        
+        List<TurmaBasicDTO> list_return = new ArrayList<>();
+        
+        for (Turma turma: repository.findAll()) {
+            TurmaBasicDTO t = new TurmaBasicDTO();
+            t.setId(turma.getId());
+            t.setDescricao(turma.getDescricao());
+            t.setProfessor(turma.getProfessor().getLogin());
+            List<String> list_logins = new ArrayList<>();
+            for (UsuarioAluno log : turma.getAlunos()) {
+                list_logins.add(log.getLogin());
+            }
+            t.setAlunos(list_logins);
+            
+            list_return.add(t);
+        }
+        
+        return list_return;
     }
     
     public boolean deleteById(Integer id) {
@@ -85,13 +103,13 @@ public class TurmaService {
         .orElseThrow(() -> new TurmaNotExistException());
     }
     
-    public TurmaDTO update(Integer id, TurmaDTO turma) {
+    public TurmaBasicDTO update(Integer id, TurmaBasicDTO turma) {
         
         if(turma.getDescricao() == null || turma.getProfessor() == null)
             throw new RegraNegocioException("Campos em falta!");
         
         UsuarioProfessor professor = (UsuarioProfessor) professorRepository
-                .findByLogin(turma.getProfessor().getLogin())
+                .findByLogin(turma.getProfessor())
                 .orElseThrow(() -> new UserNameNotFoundException());
         
         Turma t = repository.findById(id).orElseThrow(() -> new TurmaNotExistException());
@@ -101,8 +119,8 @@ public class TurmaService {
         t.setProfessor(professor);
         t.setAlunos(new ArrayList<>());
         
-        for (UserDTO aluno : turma.getAlunos()) {
-            alunoRepository.findByLogin(aluno.getLogin())
+        for (String aluno : turma.getAlunos()) {
+            alunoRepository.findByLogin(aluno)
             .map(a -> {
                 List<UsuarioAluno> list_aluno = t.getAlunos();
                 list_aluno.add((UsuarioAluno) a);

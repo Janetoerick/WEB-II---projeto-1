@@ -1,5 +1,8 @@
 package com.ufrn.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,10 +12,10 @@ import org.springframework.stereotype.Component;
 
 import com.ufrn.DTO.CreateUsuarioDTO;
 import com.ufrn.DTO.CredenciaisDTO;
-import com.ufrn.DTO.passwordAttDTO;
+import com.ufrn.DTO.PasswordAttDTO;
+import com.ufrn.DTO.UserDTO;
 import com.ufrn.enums.RoleUser;
 import com.ufrn.exception.RegraNegocioException;
-import com.ufrn.exception.SenhaInvalidaException;
 import com.ufrn.exception.UsuarioNotExistException;
 import com.ufrn.model.Usuario;
 import com.ufrn.model.UsuarioAdmin;
@@ -21,6 +24,8 @@ import com.ufrn.model.UsuarioProfessor;
 import com.ufrn.repository.UsuarioAdminRepository;
 import com.ufrn.repository.UsuarioAlunoRepository;
 import com.ufrn.repository.UsuarioProfessorRepository;
+
+
 
 @Component
 public class UsuarioService implements UserDetailsService {
@@ -118,10 +123,10 @@ public class UsuarioService implements UserDetailsService {
 //        if(usuario.getSenha().equals(user.getPassword())) {
         if(senhasBatem) {
             return user;   
+        } else {
+            throw new RegraNegocioException("Senha inválida");   
         }
          
-        
-        throw new SenhaInvalidaException();
     }
     
     public UserDetails loadUserByUsername(String username) {
@@ -172,7 +177,7 @@ public class UsuarioService implements UserDetailsService {
         
     }
     
-    public passwordAttDTO attPassword( passwordAttDTO passworddto) {
+    public PasswordAttDTO attPassword( PasswordAttDTO passworddto) {
         
         if(!passworddto.getNova_senha().equals(passworddto.getConfirmarSenha())) {
             throw new RegraNegocioException("Senhas não coincidem");
@@ -215,5 +220,26 @@ public class UsuarioService implements UserDetailsService {
         return passworddto;
     }
     
+    
+    public List<UserDTO> findAll(String type){
+    	List<UserDTO> list_return = new ArrayList<>();
+    	
+    	if(type.equals("professor")) {
+    		for (UsuarioProfessor user : repositoryProfessor.findAll()) {
+                UserDTO u = new UserDTO();
+                u.setLogin(user.getLogin());
+                list_return.add(u);
+            }	
+    	} else if(type.equals("aluno")) {
+    		for (UsuarioAluno user : repositoryAluno.findAll()) {
+                UserDTO u = new UserDTO();
+                u.setLogin(user.getLogin());
+                list_return.add(u);
+            }
+    	}
+    	
+    	
+    	return list_return;
+    }
     
 }

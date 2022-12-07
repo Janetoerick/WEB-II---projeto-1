@@ -1,13 +1,14 @@
 package com.ufrn.DTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class passwordAttDTO {
+public class PasswordAttDTO {
     private String login;
     private String senha_atual;
     private String nova_senha;
