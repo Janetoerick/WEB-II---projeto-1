@@ -23,85 +23,101 @@ public class ReservaService {
 
     @Autowired
     private ReservaGrupalRepository repositoryGrupal;
-    
+
     @Autowired
     private ReservaIndividualRepository repositoryIndividual;
-    
+
     @Autowired
     private SalaRepository repositorySala;
-    
+
+    public boolean verificarHorarioBoolean(HorarioDTO horario) {
+
+        if (horario.getData() == null || horario.getHorarioFinal() == null || horario.getHorarioInicial() == null)
+            return false;
+
+        if (horario.getData().isBefore(LocalDate.now()))
+            return false;
+
+        if (horario.getHorarioInicial().isAfter(horario.getHorarioFinal()))
+            return false;
+
+        if (horario.getData().isEqual(LocalDate.now())) {
+            if (horario.getHorarioInicial().isBefore(LocalTime.now())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void verificarHorario(HorarioDTO horario) {
-        
-        if(horario.getData() == null || horario.getHorarioFinal() == null || horario.getHorarioInicial() == null)
+
+        if (horario.getData() == null || horario.getHorarioFinal() == null || horario.getHorarioInicial() == null)
             throw new RegraNegocioException("Dados de horario ou data inexistentes!");
-            
-        if(horario.getData().isBefore(LocalDate.now()))
+
+        if (horario.getData().isBefore(LocalDate.now()))
             throw new RegraNegocioException("Data irregular!");
-        
-        if(horario.getHorarioInicial().isAfter(horario.getHorarioFinal()))
+
+        if (horario.getHorarioInicial().isAfter(horario.getHorarioFinal()))
             throw new RegraNegocioException("Horarios irregulares!");
-        
-        if(horario.getData().isEqual(LocalDate.now())) {
-            if(horario.getHorarioInicial().isBefore(LocalTime.now())) {
+
+        if (horario.getData().isEqual(LocalDate.now())) {
+            if (horario.getHorarioInicial().isBefore(LocalTime.now())) {
                 throw new RegraNegocioException("Horarios irregulares!");
             }
         }
     }
-    
+
     public boolean verificarDisponibilidade(HorarioDTO horario, Integer equipamento_id) {
-        
+
         verificarHorario(horario);
-        
-        
+
         List<ReservaIndividual> reserva_i = repositoryIndividual.findAll();
         List<ReservaIndividual> reserva_i2 = new ArrayList<>();
-        
+
         for (ReservaIndividual ri : reserva_i) {
-            if(ri.getData().equals(horario.getData()) && !(ri.getHorarioInicial().isAfter(horario.getHorarioFinal())
+            if (ri.getData().equals(horario.getData()) && !(ri.getHorarioInicial().isAfter(horario.getHorarioFinal())
                     || ri.getHorarioFinal().isBefore(horario.getHorarioInicial()))) {
                 reserva_i2.add(ri);
             }
         }
-        
-        
-        
+
         for (ReservaIndividual ri : reserva_i2) {
             for (Equipamento e : ri.getEquipamentos()) {
-                if(e.getId() == equipamento_id) {
+                if (e.getId() == equipamento_id) {
                     return false;
                 }
             }
         }
-        
-        
+
         List<ReservaGrupal> reserva_g = repositoryGrupal.findAll();
         List<ReservaGrupal> reserva_g2 = new ArrayList<>();
-        
+
         for (ReservaGrupal rg : reserva_g) {
-            if(rg.getData().equals(horario.getData()) && !(rg.getHorarioInicial().isAfter(horario.getHorarioFinal())
+            if (rg.getData().equals(horario.getData()) && !(rg.getHorarioInicial().isAfter(horario.getHorarioFinal())
                     || rg.getHorarioFinal().isBefore(horario.getHorarioInicial())) &&
-                    !(rg.getHorarioInicial().equals(horario.getHorarioFinal()) || rg.getHorarioFinal().equals(horario.getHorarioInicial()))) {
+                    !(rg.getHorarioInicial().equals(horario.getHorarioFinal())
+                            || rg.getHorarioFinal().equals(horario.getHorarioInicial()))) {
                 reserva_g2.add(rg);
             }
         }
-        
+
         List<Integer> listSalas = new ArrayList<>();
         for (ReservaGrupal rg : reserva_g2) {
-            if(!listSalas.contains(rg.getSala().getId())) {
+            if (!listSalas.contains(rg.getSala().getId())) {
                 Sala sala = repositorySala
                         .findById(rg.getSala().getId())
                         .orElseThrow(() -> new RegraNegocioException("Erro no servidor!!"));
                 for (Equipamento e : sala.getEquipamentos()) {
-                    if(e.getId() == equipamento_id) {
+                    if (e.getId() == equipamento_id) {
                         return false;
                     }
-                        
+
                 }
                 listSalas.add(rg.getSala().getId());
             }
-            
+
         }
-        
+
         return true;
     }
 }

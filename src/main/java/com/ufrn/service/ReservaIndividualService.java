@@ -97,6 +97,11 @@ public class ReservaIndividualService {
         List<ReservaIndividual> reserva = repository.findByUsuario_Login(login);
         
         for (ReservaIndividual ri : reserva) {
+            HorarioDTO h = new HorarioDTO(ri.getData(), ri.getHorarioInicial(), ri.getHorarioFinal());
+            if(!service.verificarHorarioBoolean(h)) {
+                repository.delete(ri);
+                break;
+            }
             ReservaIndividualInfoDTO reservadto = new ReservaIndividualInfoDTO();
             reservadto.setId(ri.getId());
             reservadto.setData(ri.getData());

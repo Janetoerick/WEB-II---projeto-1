@@ -145,6 +145,11 @@ public class ReservaGrupalService {
                 list_turma.add(r.getTurma());
                 for (UsuarioAluno aluno : r.getTurma().getAlunos()) {
                     if (aluno.getLogin().equals(login)) {
+                        HorarioDTO h = new HorarioDTO(r.getData(), r.getHorarioInicial(), r.getHorarioFinal());
+                        if(!service.verificarHorarioBoolean(h)) {
+                            repository.delete(r);
+                            break;
+                        }
                         ReservaGrupalInformationDTO temp = new ReservaGrupalInformationDTO();
                         temp.setData(r.getData());
                         temp.setHorarioInicial(r.getHorarioInicial());
@@ -169,6 +174,11 @@ public class ReservaGrupalService {
 
         for (ReservaGrupal r : repository.findAll()) {
             if(r.getTurma().getProfessor().getLogin().equals(login)) {
+                HorarioDTO h = new HorarioDTO(r.getData(), r.getHorarioInicial(), r.getHorarioFinal());
+                if(!service.verificarHorarioBoolean(h)) {
+                    repository.delete(r);
+                    break;
+                }
                 ReservaGrupalInformationDTO temp = new ReservaGrupalInformationDTO();
                 temp.setId(r.getId());
                 temp.setData(r.getData());
@@ -188,6 +198,8 @@ public class ReservaGrupalService {
         ReservaGrupal res = repository.findById(id)
                 .orElseThrow(() -> new ReservaNotExistException());
 
+        
+        service.verificarHorario(horario);
         if (horario.getData() != null)
             res.setData(horario.getData());
 
