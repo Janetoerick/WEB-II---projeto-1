@@ -1,8 +1,13 @@
 # Sistema de reserva de equipamento -UP-
-Utilizando Spring boot, com Spring security e JWT.
+Um projeto acadêmico da disciplina WEB II, onde é utilizado Spring boot, com Spring security e JWT.
 
+- A apresentação do sistema está em: https://youtu.be/ncVo2c9saAQ
 
-## Entidades do sistema
+## Front-end do Sistema
+O front-end foi feito utilizando React-Native.
+- O código front está em: https://github.com/Janetoerick/Sistema-de-reserva-front-end
+
+## Entidades do Sistema
 - Usuário
   - Admin
   - Aluno
